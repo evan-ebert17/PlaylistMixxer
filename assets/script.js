@@ -1,28 +1,48 @@
 //AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw api key
-function searchPlaylist() {
 
-    fetch(`https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=10&playlistId=FLw4TPXtSkpqBnyFualskAJA&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`)
+//this generates our video by taking the url the user passes, stripping it of just our useable url, and then generating an iframe.
+document.getElementById("generatePlaylist").addEventListener("click", function() {
+    var userInputtedURL = document.getElementById("videoURL").value
+    var videoLocation = document.getElementById("videoLocation");
+
+    var urlFormatting = (/https:\/\/www\.youtube\.com\/playlist\?list=/);
+
+    var formattedURL = userInputtedURL.replace(urlFormatting,"")
+    console.log(formattedURL)
+    //const iframeVideoLocation = `<iframe id="videoCurrentlyPlaying" width="100%" height="100%" src="https://www.youtube.com/embed/${formattedURL[1]}" frameborder="0" allow="encrypted-media" allowfullscreen=""></iframe>`
+
+    //videoLocation.innerHTML = iframeVideoLocation;
+
+    searchForPlaylist(formattedURL)
+});
+
+function searchForPlaylist(urlOfPlaylist) {
+
+    //this line is taking the "youtube.googleapis" api and fetiching all the formation in a playlist 
+    //currently set to limit of 10 items, change &maxResults=10 to change this.
+    //to change the url of the playlist retrieved, change the &playldistId= 's url.
+    //last part is the API key, but you don't need to change that.
+    
+    fetch(`https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=10&playlistId=${urlOfPlaylist}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`)
     .then(function (response) {
+        //this is just getting back the object in JSON 
         return response.json();
     })
+    //this is our readable api data back
     .then(data => {
+        //look through this to get your information you want.
         console.log(data)
+
+        var playlistItems = data.items;
+        
+        putVideosInPlaylist(playlistItems)
     })
 
 }
 
-searchPlaylist();
-
-//this generates our video by taking the url the user passes, stripping it of just our useable url, and then generating an iframe.
-// document.getElementById("generatePlaylist").addEventListener("click", function() {
-//     var userInputtedURL = document.getElementById("videoURL").value
-//     var videoLocation = document.getElementById("videoLocation");
-
-//     var formattedURL = (/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-
-//     const iframeVideoLocation = `<iframe id="videoCurrentlyPlaying" width="100%" height="100%" src="https://www.youtube.com/embed/${formattedURL[1]}" frameborder="0" allow="encrypted-media" allowfullscreen=""></iframe>`
-
-//     videoLocation.innerHTML = iframeVideoLocation;
-// });
+function putVideosInPlaylist(playlistItemsToShuffle) {
+    //this is returning the snippet section of the api information
+    var singleVideoInformation = playlistItemsToShuffle
+}
 
 
