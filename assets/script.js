@@ -11,12 +11,13 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
     console.log(formattedURL)
 
     let arrayOfAllVideos = [];
+    console.log(formattedURL)
     searchForPlaylist(formattedURL,arrayOfAllVideos);
-    // playlistTypeSelector()
-
+    console.log(arrayOfAllVideos)
+    putVideosInPlaylist(...arrayOfAllVideos);
 });
 
-async function searchForPlaylist(urlOfPlaylist,videoItems) {
+ function searchForPlaylist(urlOfPlaylist,videoItems) {
 
     //this line is taking the "youtube.googleapis" api and fetiching all the formation in a playlist 
     //currently set to limit of 10 items, change &maxResults=10 to change this.
@@ -78,19 +79,32 @@ async function searchForPlaylist(urlOfPlaylist,videoItems) {
 }
 
 function putVideosInPlaylist(playlistItemsToShuffle) {
+    
     //this is returning the snippet section of the api information
 
-    //var videosToBeShuffled = [];
+    const ORIGINAL_LENGTH = playlistItemsToShuffle.length;
+    console.log(ORIGINAL_LENGTH)
+    let videosThatHaveBeenShuffled = [];  
 
-    var videosThatHaveBeenShuffled = [];
-    var videsToNotBePlayedForRestOfShuffle = [];
+    for(i = 0; i < ORIGINAL_LENGTH; i++) {
+        
+        console.log(playlistItemsToShuffle)
+        var currentRandomNumber = Math.floor(Math.random() * ORIGINAL_LENGTH);
+        var randomVideoFromUnshuffledPlaylist = playlistItemsToShuffle[currentRandomNumber]
+        videosThatHaveBeenShuffled.push(randomVideoFromUnshuffledPlaylist)
+        playlistItemsToShuffle.splice(currentRandomNumber,1);
+    }
 
-    var singleVideoInformation = playlistItemsToShuffle[0].snippet.resourceId.videoId
-    console.log(singleVideoInformation)
+    
+    
+    // let videosToNotBePlayedForRestOfShuffle = [];
 
-    const iframeVideoLocation = `<iframe id="videoCurrentlyPlaying" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${singleVideoInformation}" frameborder="0" allow="encrypted-media" allowfullscreen=""></iframe>`
-    var videoLocation = document.getElementById("videoLocation");
-    videoLocation.innerHTML = iframeVideoLocation;
+    // while (videosToNotBePlayedForRestOfShuffle.length !== ORIGINAL_LENGTH) {
+    //     const iframeVideoLocation = `<iframe id="videoCurrentlyPlaying" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${singleVideoInformation}" frameborder="0" allow="encrypted-media" allowfullscreen=""></iframe>`
+    //     var videoLocation = document.getElementById("videoLocation");
+    //     videoLocation.innerHTML = iframeVideoLocation;
+    // }
+
 
 }
 
