@@ -10,17 +10,19 @@ document.getElementById("generatePlaylist").addEventListener("click", function()
     var formattedURL = userInputtedURL.replace(urlFormatting,"")
     console.log(formattedURL)
 
-    playlistTypeSelector()
-    searchForPlaylist(formattedURL)
+    // playlistTypeSelector()
 });
 
-function searchForPlaylist(urlOfPlaylist) {
+ function searchForPlaylist(urlOfPlaylist) {
 
     //this line is taking the "youtube.googleapis" api and fetiching all the formation in a playlist 
     //currently set to limit of 10 items, change &maxResults=10 to change this.
     //to change the url of the playlist retrieved, change the &playldistId= 's url.
     //last part is the API key, but you don't need to change that.
     
+
+    // playlistTypeSelector();
+
     fetch(`https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=10&playlistId=${urlOfPlaylist}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`)
     .then(function (response) {
         //this is just getting back the object in JSON 
@@ -33,13 +35,19 @@ function searchForPlaylist(urlOfPlaylist) {
 
         var playlistItems = data.items;
         
-        putVideosInPlaylist(playlistItems)
+        putVideosInPlaylist(playlistItems, whatShuffleToUse)
     })
 
 }
 
 function putVideosInPlaylist(playlistItemsToShuffle) {
     //this is returning the snippet section of the api information
+
+    //var videosToBeShuffled = [];
+
+    var videosThatHaveBeenShuffled = [];
+    var videsToNotBePlayedForRestOfShuffle = [];
+
     var singleVideoInformation = playlistItemsToShuffle[0].snippet.resourceId.videoId
     console.log(singleVideoInformation)
 
@@ -49,11 +57,32 @@ function putVideosInPlaylist(playlistItemsToShuffle) {
     
 }
 
-function playlistTypeSelector() {
+ function playlistTypeSelector() {
     //this function returns the choice a user made in their preferred shuffle method and generates the card to make that choice.
-    var cardLocation = document.getElementById("floatingChoiceMenu");
-    var dimWebpage = document.getElementById("overlay");
-    dimWebpage.style.display = "block"
+    var mcvhInsertingChoiceCard = document.getElementById('middleContentVideoHolder')
+    var floatingChoiceDiv = document.createElement('div');
+    floatingChoiceDiv.setAttribute('id','floatingChoiceDiv');
 
+    //this card creates 3 buttons that will determine the "3" choices the user can make.
+    floatingChoiceDiv.innerHTML = `
+    
+    
+    <div id="floatingChoiceMenu">
+                    <button id="trueRandom" class="shuffleChoice">true-random shuffle</button>
+                    <button id="rangeRandom" class="shuffleChoice">num shuffle</button>
+                    <button id="smartRandom" class="shuffleChoice">smart shuffle</button>
+                </div>
+    
+    `
+    mcvhInsertingChoiceCard.appendChild(floatingChoiceDiv);
+
+    //this commented out stuff is a potential dim feature on the button card generation
+
+    // var cardLocation = document.getElementById("floatingChoiceMenu");
+    // var dimWebpage = document.getElementById("overlay");
+    // dimWebpage.style.display = "block"
+
+    var trueRandomButton = document.getElementById("trueRandom")
+    
 }
 
