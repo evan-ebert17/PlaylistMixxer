@@ -1,4 +1,5 @@
 //AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw api key
+//test url https://www.youtube.com/playlist?list=PL2uxd6YWj7PKk4LnkWZEyqpcvnXmv8Iuf
 
 //this generates our video by taking the url the user passes, stripping it of just our useable url, and then generating an iframe.
 document.getElementById("generatePlaylist").addEventListener("click", function() {
@@ -42,7 +43,13 @@ function searchForPlaylist(urlOfPlaylist) {
 
 function putVideosInPlaylist(playlistItemsToShuffle) {
     //this is returning the snippet section of the api information
-    var singleVideoInformation = playlistItemsToShuffle
+    var singleVideoInformation = playlistItemsToShuffle[0].snippet.resourceId.videoId
+    console.log(singleVideoInformation)
+
+    const iframeVideoLocation = `<iframe id="videoCurrentlyPlaying" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${singleVideoInformation}" frameborder="0" allow="encrypted-media" allowfullscreen=""></iframe>`
+    var videoLocation = document.getElementById("videoLocation");
+    videoLocation.innerHTML = iframeVideoLocation;
+    
 }
 
 
