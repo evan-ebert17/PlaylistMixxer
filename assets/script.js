@@ -4,16 +4,13 @@
 //this generates our video by taking the url the user passes, stripping it of just our useable url, and then generating an iframe.
 document.getElementById("generatePlaylist").addEventListener("click", function() {
     var userInputtedURL = document.getElementById("videoURL").value
-    var videoLocation = document.getElementById("videoLocation");
 
     var urlFormatting = (/https:\/\/www\.youtube\.com\/playlist\?list=/);
 
     var formattedURL = userInputtedURL.replace(urlFormatting,"")
     console.log(formattedURL)
-    //const iframeVideoLocation = `<iframe id="videoCurrentlyPlaying" width="100%" height="100%" src="https://www.youtube.com/embed/${formattedURL[1]}" frameborder="0" allow="encrypted-media" allowfullscreen=""></iframe>`
 
-    //videoLocation.innerHTML = iframeVideoLocation;
-
+    playlistTypeSelector()
     searchForPlaylist(formattedURL)
 });
 
@@ -52,4 +49,11 @@ function putVideosInPlaylist(playlistItemsToShuffle) {
     
 }
 
+function playlistTypeSelector() {
+    //this function returns the choice a user made in their preferred shuffle method and generates the card to make that choice.
+    var cardLocation = document.getElementById("floatingChoiceMenu");
+    var dimWebpage = document.getElementById("overlay");
+    dimWebpage.style.display = "block"
+
+}
 
