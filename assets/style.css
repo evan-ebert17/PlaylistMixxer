@@ -1,3 +1,7 @@
+* {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
   :root {
     --dimmed_color: rgba(0, 0, 0, 0.5);
     --grey: #4E4A59;
@@ -19,8 +23,8 @@
     animation: fade_in 1s, slide_down 1.2s ease;
     border-radius: 25px;
     border: 2px solid #29BF12;
-    height: 50%;
-    background-color: white;
+    height: 75%;
+    background-color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -39,8 +43,32 @@
     height: 100%;
   }
 
+  .exampleImages {
+    display: flex;
+    justify-content: space-evenly;
+
+  }
+
+  img {
+    object-fit: contain;
+}
+
+  .choiceButtons {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+  }
+
+  .shuffleChoice {
+    width: 100%;
+    border-radius: 25px;
+
+  }
+
   .shuffleChoice:hover {
     cursor: pointer;
+    background-color: #cccccc
   }
 
   @keyframes slide_down{
