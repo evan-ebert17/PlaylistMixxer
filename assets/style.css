@@ -66,6 +66,21 @@
 
   }
 
+  .textHolder {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: auto 1% auto 1%;
+  }
+
+  .inputHolder {
+    margin-bottom: 1%;
+  }
+
+  .textHolder h2 {
+    text-align: center;
+  }
+
   .shuffleChoice:hover {
     cursor: pointer;
     background-color: #cccccc
