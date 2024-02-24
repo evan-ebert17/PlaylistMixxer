@@ -16,13 +16,22 @@
 
         <div class="topContentHolder">
             <div class="centeredDiv">
-                <h1>Youtube Custom Shuffler</h1>
-                <h2>Takes in a Youtube URL and generates a variety of user selected parameters to make better, user
-                    desired,
-                    shuffles.</h2>
-                <div class="inputCombo">
+                <div class="textHolder">
+                    <h1>Youtube Custom Shuffler</h1>
+                    <h2>Takes in a Youtube URL and generates a variety of user selected parameters to make better, user
+                        desired, shuffles.</h2>
+                    <h3>(try and limit to <5000 items)</h2>
+
+                </div>
+                <div id="inputHolder">
                     <input placeholder="Enter URL here" id="videoURL">
                     <button id="generatePlaylist">Generate playlist</button>
+                    <div class="lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                 </div>
                 <div class="exampleImages">
 
@@ -38,14 +47,14 @@
                     <div id="imageTopUrl">
                         <img src="./assets/img/gettingUrlUpTop.PNG">
                     </div> -->
-                    
+
                 </div>
                 <div class="choiceButtons">
                     <button class="shuffleChoice">true-random shuffle</button>
                     <button class="shuffleChoice">num shuffle</button>
                     <button class="shuffleChoice">smart shuffle</button>
                 </div>
-                
+
             </div>
         </div>
     </div>
