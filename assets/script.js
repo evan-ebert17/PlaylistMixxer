@@ -8,16 +8,20 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
     var urlFormatting = (/https:\/\/www\.youtube\.com\/playlist\?list=/);
 
     var formattedURL = userInputtedURL.replace(urlFormatting, "")
-    console.log(formattedURL)
 
     let arrayOfAllVideos = [];
-    console.log(formattedURL)
+
+    //FOR FUTURE ME:
+    //THIS CODE ISN'T WORKING AS INTENDED
+    //searchForPlaylist's API CALL IS TOO SLOW AND WE NEED TO MAKE AN ASYNC AWAIT CALL
+    //BEFORE WE PASS THE ARRAY IT GIVES US TO putVideosInPlaylist
+    
     searchForPlaylist(formattedURL,arrayOfAllVideos);
     console.log(arrayOfAllVideos)
     putVideosInPlaylist(...arrayOfAllVideos);
 });
 
- function searchForPlaylist(urlOfPlaylist,videoItems) {
+ async function searchForPlaylist(urlOfPlaylist,videoItems) {
 
     //this line is taking the "youtube.googleapis" api and fetiching all the formation in a playlist 
     //currently set to limit of 10 items, change &maxResults=10 to change this.
