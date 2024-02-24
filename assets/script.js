@@ -4,12 +4,13 @@
 //this generates our video by taking the url the user passes, stripping it of just our useable url, and then generating an iframe.
 document.getElementById("generatePlaylist").addEventListener("click", function () {
     var userInputtedURL = document.getElementById("videoURL").value
+    const inputDiv = document.getElementById("inputHolder")
+    
+
 
     var urlFormatting = (/https:\/\/www\.youtube\.com\/playlist\?list=/);
 
     var formattedPlaylistID = userInputtedURL.replace(urlFormatting, "")
-
-    let arrayOfAllVideos = [];
 
     //FOR FUTURE ME:
     //THIS CODE IS WORKING AS HALF INTENDED!
@@ -24,40 +25,45 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
     let url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${formattedPlaylistID}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`
 
     //we fetch the url
-    fetch(url)
+
+    return fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log(data)
-
             var nextPageToken = data.nextPageToken;
+            let arrayOfAllVideos = [];
+
+            //naming variables for readability
+
+            var itemsThisPage = data.items.length
+
+            //loop through the results and strip the video ids, stick them in "arrayOfAllVideos"
+            for (i = 0; i < itemsThisPage; i++) {
+                //this is getting the unique id/url of the video at index i.
+                let individualVideo = data.items[i].snippet.resourceId.videoId
+
+                //sending them to our array to be shuffled
+                arrayOfAllVideos.push(individualVideo);
+            }
 
             //if we dont find that the playlist requested has another page, no worries for the complicated pagination!
-            if (nextPageToken == undefined) {
-
-                //naming variables for readability
-                var totalAmountOfVideosInPlaylist = data.pageInfo.totalResults;
-
-                //loop through the results and strip the video ids, stick them in "arrayOfAllVideos"
-                for (i = 0; i < totalAmountOfVideosInPlaylist; i++) {
-                    //this is getting the unique id/url of the video at index i.
-                    let individualVideo = data.items[i].snippet.resourceId.videoId
-
-                    //sending them to our array to be shuffled
-                    arrayOfAllVideos.push(individualVideo);
-                }
-
+            if (nextPageToken === undefined) {
                 //after we're done putting those videos into our array, we can call our shuffling algo.
-                putVideosInPlaylist(arrayOfAllVideos);
+                shufflePlaylist(arrayOfAllVideos);
             } else {
-                searchForPlaylist(formattedPlaylistID, nextPageToken ,arrayOfAllVideos);
+                putVideosInPlaylist(formattedPlaylistID, nextPageToken, arrayOfAllVideos)
+                    .then(finalResult => {
+                        shufflePlaylist(finalResult)
+                    }
+
+                    )
             }
-        })
+        }
+        )
 
-    //console.log(arrayOfAllVideos)
-    //putVideosInPlaylist(arrayOfAllVideos);
-});
 
-async function searchForPlaylist(playlistID, nextPageToken, videoItems) {
+})
+
+function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
 
     //this line is taking the "youtube.googleapis" api and fetiching all the formation in a playlist 
     //currently set to limit of 10 items, change &maxResults=10 to change this.
@@ -67,36 +73,24 @@ async function searchForPlaylist(playlistID, nextPageToken, videoItems) {
     //this will hold the value of 1 video for our users, as an example.
     // `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${urlOfPlaylist}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`
 
+    //this function recursively returns promises and resolves them at the end of each recursion
+    return new Promise((resolve, reject) => {
 
-    url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=${nextPageToken}&playlistId=${playlistID}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`;
+        //our url we will be checking to see if hasNextPage (next_pageToken)
+        let url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=${next_pageToken}&playlistId=${playlistID}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`;
 
-    //initializing next page so it doesn't get flagged at start of recursion.
+        //while there IS a next page to get information from...
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                //json object that gives us our data back
+                console.log(data);
 
-    //while there IS a next page to get information from...
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            //json object that gives us our data back
-            console.log(data);
+                //this gives us the amount of things on X page, if it's less than 50 we're done looping and need to accomodate the < 50 so we dont get undefined or OOB index errors
+                let itemsThisPage = data.items.length
+                console.log(itemsThisPage)
 
-
-
-            //if there is only one pages worth of items in a playlist
-            if (!(hasNextPage)) {
-                for (i = 0; i < totalAmountOfVideosInPlaylist; i++) {
-                    //this is getting the unique id/url of the video at index i.
-                    let individualVideo = data.items[i].snippet.resourceId.videoId
-
-                    //sending them to our array up in the button eventListener
-                    videoItems.push(individualVideo);
-                }
-            }
-
-            while (hasNextPage) {
-
-                if (totalAmountOfVideosInPlaylist > MAX_RESULTS_PER_PAGE) totalAmountOfVideosInPlaylist = MAX_RESULTS_PER_PAGE;
-
-                for (i = 0; i < totalAmountOfVideosInPlaylist; i++) {
+                for (let i = 0; i < itemsThisPage; i++) {
                     //this is getting the unique id/url of the video at index i.
                     let individualVideo = data.items[i].snippet.resourceId.videoId
 
@@ -104,17 +98,28 @@ async function searchForPlaylist(playlistID, nextPageToken, videoItems) {
                     videoItems.push(individualVideo);
                 }
 
+                //if this exists, we don't return undefined
+                let next_pageToken = data.nextPageToken;
 
-            }
-        })
+                //if the previous line didn't return undefined
+                if(next_pageToken !== undefined) {
+                    //resolve the last step of our recursion
+                    resolve(putVideosInPlaylist(playlistID, next_pageToken, videoItems))
+                } else {
+                    resolve(videoItems)
+                }
 
-        //error handling
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-}
+                //error handling
+            })
+            .catch(error => {
+                reject(error);
+            });
+    })
 
-function putVideosInPlaylist(playlistItemsToShuffle) {
+
+};
+
+function shufflePlaylist(playlistItemsToShuffle) {
 
     //this is returning the snippet section of the api information
     let videosThatHaveBeenShuffled = []
@@ -130,11 +135,6 @@ function putVideosInPlaylist(playlistItemsToShuffle) {
         console.log(videosThatHaveBeenShuffled)
 
     }
-
-
-
-
-
 
     // let videosToNotBePlayedForRestOfShuffle = [];
 
