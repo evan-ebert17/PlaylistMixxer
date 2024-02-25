@@ -1,14 +1,18 @@
 //AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw api key
 //test url https://www.youtube.com/playlist?list=PL2uxd6YWj7PKk4LnkWZEyqpcvnXmv8Iuf
 
+//creating a "Video" objects constructor:
+function VideoDetails(videoID, videoTitle, thumbnailPictureUrl) {
+    this.videoID = videoID;
+    this.videoTitle = videoTitle;
+    this.thumbnailPictureUrl = thumbnailPictureUrl;
+}
+
 //this generates our video by taking the url the user passes, stripping it of just our useable url, and then generating an iframe.
 document.getElementById("generatePlaylist").addEventListener("click", function () {
     var userInputtedURL = document.getElementById("videoURL").value
-    const inputDiv = document.getElementById("inputHolder")
 
-
-
-    var urlFormatting = (/https:\/\/www\.youtube\.com\/playlist\?list=/);
+    var urlFormatting = /^https?:\/\/(?:www\.)?youtube\.com\/playlist\?list=/
 
     var formattedPlaylistID = userInputtedURL.replace(urlFormatting, "")
 
@@ -22,17 +26,17 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
     //to change the url of the playlist retrieved, change the &playldistId= 's url.
     //last part is the API key, but you don't need to change that.
 
-    let url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${formattedPlaylistID}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`
+    let apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${formattedPlaylistID}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`
 
     //we fetch the url
-
-
-    fetch(url)
+    fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
+
+            console.log(data)
             let loader = document.getElementById("loader");
-            console.log(loader)
-           loader.style.display = 'inline-block';
+
+            loader.style.display = 'inline-block';
             var nextPageToken = data.nextPageToken;
             let arrayOfAllVideos = [];
 
@@ -43,10 +47,16 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
             //loop through the results and strip the video ids, stick them in "arrayOfAllVideos"
             for (i = 0; i < itemsThisPage; i++) {
                 //this is getting the unique id/url of the video at index i.
-                let individualVideo = data.items[i].snippet.resourceId.videoId
+                let individualVideo = data.items[i].snippet.resourceId.videoId;
+                let individualVideoTitle = data.items[i].snippet.title;
 
+                //the thumbnails url is just the video url with this formatting
+                let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
+
+                //creating the VideoDetails object which holds the necissary information for creating the playlist later.
+                const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl)
                 //sending them to our array to be shuffled
-                arrayOfAllVideos.push(individualVideo);
+                arrayOfAllVideos.push(completeVideoObject);
             }
 
             //if we dont find that the playlist requested has another page, no worries for the complicated pagination!
@@ -62,7 +72,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
                         playlistTypeSelector(finalResult);
                     }
                     )
-                    
+
             }
 
         }
@@ -87,10 +97,10 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
     return new Promise((resolve, reject) => {
 
         //our url we will be checking to see if hasNextPage (next_pageToken)
-        let url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=${next_pageToken}&playlistId=${playlistID}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`;
+        let apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=${next_pageToken}&playlistId=${playlistID}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`;
 
         //while there IS a next page to get information from...
-        fetch(url)
+        fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
                 //json object that gives us our data back
@@ -102,10 +112,15 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
 
                 for (let i = 0; i < itemsThisPage; i++) {
                     //this is getting the unique id/url of the video at index i.
-                    let individualVideo = data.items[i].snippet.resourceId.videoId
+                    let individualVideo = data.items[i].snippet.resourceId.videoId;
+                    let individualVideoTitle = data.items[i].snippet.title;
+                    //the thumbnails url is just the video url with this formatting
+                    let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
 
+                    const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl)
                     //sending them to our array up in the button eventListener
-                    videoItems.push(individualVideo);
+
+                    videoItems.push(completeVideoObject);
                 }
 
                 //if this exists, we don't return undefined
