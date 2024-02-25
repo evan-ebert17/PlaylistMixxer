@@ -15,24 +15,26 @@
 
 
         <div class="topContentHolder">
-            <div class="centeredDiv">
+            <div id="centeredDiv" class="centeredDiv">
                 <div class="textHolder">
                     <h1>Youtube Custom Shuffler</h1>
                     <h2>Takes in a Youtube URL and generates a variety of user selected parameters to make better, user
                         desired, shuffles.</h2>
                     <h3>(Try and limit to <5000 items)</h3>
 
+                            <div id="inputHolder">
+                                <input placeholder="Enter URL here" id="videoURL">
+                                <button id="generatePlaylist">Generate playlist</button>
+                                <div id="loader" class="lds-ellipsis">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+
                 </div>
-                <div id="inputHolder">
-                    <input placeholder="Enter URL here" id="videoURL">
-                    <button id="generatePlaylist">Generate playlist</button>
-                    <div id="loader" class="lds-ellipsis">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                </div>
+
                 <div class="exampleImages">
 
                     <!-- <div class="imageShareDiv">

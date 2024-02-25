@@ -43,6 +43,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
             //naming variables for readability
 
             var itemsThisPage = data.items.length
+            //I think there may be an edge case where if a playlist is exactly 50 elements long, we're going to lose the last, or 50th element
 
             //loop through the results and strip the video ids, stick them in "arrayOfAllVideos"
             for (i = 0; i < itemsThisPage; i++) {
@@ -156,8 +157,6 @@ function trueRandomShuffle(playlistItemsToShuffle) {
         var randomVideoFromUnshuffledPlaylist = playlistItemsToShuffle[currentRandomNumber]
         videosThatHaveBeenShuffled.push(randomVideoFromUnshuffledPlaylist)
         playlistItemsToShuffle.splice(currentRandomNumber, 1);
-        console.log(playlistItemsToShuffle)
-        console.log(videosThatHaveBeenShuffled)
 
     }
 
@@ -169,6 +168,7 @@ function trueRandomShuffle(playlistItemsToShuffle) {
     //     videoLocation.innerHTML = iframeVideoLocation;
     // }
 
+    playlistCreation(videosThatHaveBeenShuffled)
 
 }
 
@@ -210,3 +210,20 @@ function playlistTypeSelector(arrayOfAllVideos) {
 
 }
 
+function playlistCreation(playlistWithAllVideoDetails) {
+    //we're going to take our main card and remove the flex-direction tag, condensing everything
+    //to one side of the card, and make the other side of the card where we house our videos.
+    
+    //emptying out the buttons on screen for Div formatting
+    document.getElementById('choiceButtonsDiv').innerHTML = ''
+    let centeredDiv = document.getElementById('centeredDiv');
+    centeredDiv.style.flexDirection = 'initial'
+    let inputHolderDiv = document.getElementById('inputHolder');
+    inputHolderDiv.style.display = 'flex';
+    inputHolderDiv.style.flexDirection = 'column';
+    inputHolderDiv.style.alignItems = 'center'
+
+
+
+    console.log(playlistWithAllVideoDetails)
+}
