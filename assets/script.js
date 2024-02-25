@@ -2,10 +2,15 @@
 //test url https://www.youtube.com/playlist?list=PL2uxd6YWj7PKk4LnkWZEyqpcvnXmv8Iuf
 
 //creating a "Video" objects constructor:
-function VideoDetails(videoID, videoTitle, thumbnailPictureUrl) {
-    this.videoID = videoID;
+function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, isLastItem) {
+    this.videoId = videoId;
     this.videoTitle = videoTitle;
     this.thumbnailPictureUrl = thumbnailPictureUrl;
+    //this will be used to tell if our playlist is done playing
+    this.isLastItem = isLastItem;
+    if(isLastItem === undefined) {
+        this.isLastItem = false;
+    }
 }
 
 //this generates our video by taking the url the user passes, stripping it of just our useable url, and then generating an iframe.
@@ -160,13 +165,25 @@ function trueRandomShuffle(playlistItemsToShuffle) {
 
     }
 
-    // let videosToNotBePlayedForRestOfShuffle = [];
+    //adding our video that flags "we're done!"" (isLastItem = true) to end of array.
+    //this is so we can create a conditional loop later for "while... != true"
+    let lastItemInPlaylist = new VideoDetails(
+        //videoId
+        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length-1].videoId,
+        //videoTitle
+        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length-1].videoTitle,
+        //thumbnailUrl
+        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length-1].thumbnailPictureUrl,
+        //isLastItem
+        true
+    )
 
-    // while (videosToNotBePlayedForRestOfShuffle.length !== ORIGINAL_LENGTH) {
-    //     const iframeVideoLocation = `<iframe id="videoCurrentlyPlaying" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${singleVideoInformation}" frameborder="0" allow="encrypted-media" allowfullscreen=""></iframe>`
-    //     var videoLocation = document.getElementById("videoLocation");
-    //     videoLocation.innerHTML = iframeVideoLocation;
-    // }
+
+    //removing last element
+    videosThatHaveBeenShuffled.splice(videosThatHaveBeenShuffled.length-1,1)
+
+    //replacing last element with our isLastItem flagged video.
+    videosThatHaveBeenShuffled.push(lastItemInPlaylist)
 
     playlistCreation(videosThatHaveBeenShuffled)
 
@@ -200,30 +217,38 @@ function playlistTypeSelector(arrayOfAllVideos) {
 
     rangeRandomShuffleButton.addEventListener('click', () => {
         //eventually change to rangeRandomShuffle()
-        trueRandomShuffle(arrayOfAllVideos)
+        //trueRandomShuffle(arrayOfAllVideos)
     })
 
     smartRandomShuffleButton.addEventListener('click', () => {
         //eventually change to smartRandomShuffle()
-        trueRandomShuffle(arrayOfAllVideos)
+        //trueRandomShuffle(arrayOfAllVideos)
     })
 
 }
 
 function playlistCreation(playlistWithAllVideoDetails) {
-    //we're going to take our main card and remove the flex-direction tag, condensing everything
-    //to one side of the card, and make the other side of the card where we house our videos.
     
     //emptying out the buttons on screen for Div formatting
-    document.getElementById('choiceButtonsDiv').innerHTML = ''
+    let choiceButtonsDiv = document.getElementById('choiceButtonsDiv');
+    choiceButtonsDiv.innerHTML = ''
+
+    //creating a green border to the left of where the videos will be played
+    choiceButtonsDiv.style.borderLeft = '2px solid #29BF12'
     let centeredDiv = document.getElementById('centeredDiv');
+
+    //we're going to take our main card and remove the flex-direction tag, condensing everything
+    //to one side of the card, and make the other side of the card where we house our videos.
     centeredDiv.style.flexDirection = 'initial'
+    centeredDiv.style.width = '95%'
     let inputHolderDiv = document.getElementById('inputHolder');
+
+    //centering our newly moved input fields
     inputHolderDiv.style.display = 'flex';
     inputHolderDiv.style.flexDirection = 'column';
-    inputHolderDiv.style.alignItems = 'center'
-
-
+    inputHolderDiv.style.alignItems = 'center';
 
     console.log(playlistWithAllVideoDetails)
+
+
 }
