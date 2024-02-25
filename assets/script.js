@@ -5,7 +5,7 @@
 document.getElementById("generatePlaylist").addEventListener("click", function () {
     var userInputtedURL = document.getElementById("videoURL").value
     const inputDiv = document.getElementById("inputHolder")
-    
+
 
 
     var urlFormatting = (/https:\/\/www\.youtube\.com\/playlist\?list=/);
@@ -26,9 +26,13 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
     //we fetch the url
 
-    return fetch(url)
+
+    fetch(url)
         .then(response => response.json())
         .then(data => {
+            let loader = document.getElementById("loader");
+            console.log(loader)
+           loader.style.display = 'inline-block';
             var nextPageToken = data.nextPageToken;
             let arrayOfAllVideos = [];
 
@@ -47,18 +51,24 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
             //if we dont find that the playlist requested has another page, no worries for the complicated pagination!
             if (nextPageToken === undefined) {
+                loader.style.display = 'none';
                 //after we're done putting those videos into our array, we can call our shuffling algo.
-                shufflePlaylist(arrayOfAllVideos);
+                playlistTypeSelector(arrayOfAllVideos);
             } else {
+
                 putVideosInPlaylist(formattedPlaylistID, nextPageToken, arrayOfAllVideos)
                     .then(finalResult => {
-                        shufflePlaylist(finalResult)
+                        loader.style.display = 'none';
+                        playlistTypeSelector(finalResult);
                     }
-
                     )
+                    
             }
+
         }
         )
+
+
 
 
 })
@@ -102,7 +112,7 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
                 let next_pageToken = data.nextPageToken;
 
                 //if the previous line didn't return undefined
-                if(next_pageToken !== undefined) {
+                if (next_pageToken !== undefined) {
                     //resolve the last step of our recursion
                     resolve(putVideosInPlaylist(playlistID, next_pageToken, videoItems))
                 } else {
@@ -119,7 +129,7 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
 
 };
 
-function shufflePlaylist(playlistItemsToShuffle) {
+function trueRandomShuffle(playlistItemsToShuffle) {
 
     //this is returning the snippet section of the api information
     let videosThatHaveBeenShuffled = []
@@ -147,32 +157,41 @@ function shufflePlaylist(playlistItemsToShuffle) {
 
 }
 
-function playlistTypeSelector() {
+function playlistTypeSelector(arrayOfAllVideos) {
     //this function returns the choice a user made in their preferred shuffle method and generates the card to make that choice.
-    var mcvhInsertingChoiceCard = document.getElementById('middleContentVideoHolder')
-    var floatingChoiceDiv = document.createElement('div');
-    floatingChoiceDiv.setAttribute('id', 'floatingChoiceDiv');
+    var choiceButtonsDiv = document.getElementById('choiceButtonsDiv')
 
     //this card creates 3 buttons that will determine the "3" choices the user can make.
-    floatingChoiceDiv.innerHTML = `
+    choiceButtonsDiv.innerHTML = `
     
-    
-    <div id="floatingChoiceMenu">
                     <button id="trueRandom" class="shuffleChoice">true-random shuffle</button>
                     <button id="rangeRandom" class="shuffleChoice">num shuffle</button>
                     <button id="smartRandom" class="shuffleChoice">smart shuffle</button>
-                </div>
     
     `
-    mcvhInsertingChoiceCard.appendChild(floatingChoiceDiv);
-
     //this commented out stuff is a potential dim feature on the button card generation
 
     // var cardLocation = document.getElementById("floatingChoiceMenu");
     // var dimWebpage = document.getElementById("overlay");
     // dimWebpage.style.display = "block"
 
-    var trueRandomButton = document.getElementById("trueRandom")
+    var trueRandomShuffleButton = document.getElementById("trueRandom")
+    var rangeRandomShuffleButton = document.getElementById("trueRandom")
+    var smartRandomShuffleButton = document.getElementById("trueRandom")
+
+    trueRandomShuffleButton.addEventListener('click', () => {
+        trueRandomShuffle(arrayOfAllVideos)
+    })
+
+    rangeRandomShuffleButton.addEventListener('click', () => {
+        //eventually change to rangeRandomShuffle()
+        trueRandomShuffle(arrayOfAllVideos)
+    })
+
+    smartRandomShuffleButton.addEventListener('click', () => {
+        //eventually change to smartRandomShuffle()
+        trueRandomShuffle(arrayOfAllVideos)
+    })
 
 }
 

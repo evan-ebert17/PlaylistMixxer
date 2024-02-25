@@ -82,7 +82,7 @@
   }
 
   #videoURL {
-    width: 33.5em;
+    width: 34.25em;
   }
 
   .textHolder h2 {
@@ -113,7 +113,7 @@
   /* LOADER CSS */
 
   .lds-ellipsis {
-    display: inline-block;
+    display: none;
     position: relative;
     width: 80px;
     height: 45px;
