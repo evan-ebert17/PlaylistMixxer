@@ -2,10 +2,11 @@
 //test url https://www.youtube.com/playlist?list=PL2uxd6YWj7PKk4LnkWZEyqpcvnXmv8Iuf
 
 //creating a "Video" objects constructor:
-function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, isLastItem) {
+function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, isLastItem) {
     this.videoId = videoId;
     this.videoTitle = videoTitle;
     this.thumbnailPictureUrl = thumbnailPictureUrl;
+    this.videoUploader = videoUploader;
     //this will be used to tell if our playlist is done playing
     this.isLastItem = isLastItem;
     if(isLastItem === undefined) {
@@ -55,12 +56,13 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
                 //this is getting the unique id/url of the video at index i.
                 let individualVideo = data.items[i].snippet.resourceId.videoId;
                 let individualVideoTitle = data.items[i].snippet.title;
+                let individualVideoUploader =  data.items[i].snippet.videoOwnerChannelTitle;
 
                 //the thumbnails url is just the video url with this formatting
                 let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
 
                 //creating the VideoDetails object which holds the necissary information for creating the playlist later.
-                const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl)
+                const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl, individualVideoUploader)
                 //sending them to our array to be shuffled
                 arrayOfAllVideos.push(completeVideoObject);
             }
@@ -174,6 +176,8 @@ function trueRandomShuffle(playlistItemsToShuffle) {
         videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length-1].videoTitle,
         //thumbnailUrl
         videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length-1].thumbnailPictureUrl,
+        //videoUploader
+        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length-1].videoUploader,
         //isLastItem
         true
     )
@@ -228,6 +232,9 @@ function playlistTypeSelector(arrayOfAllVideos) {
 }
 
 function playlistCreation(playlistWithAllVideoDetails) {
+
+    console.log(playlistWithAllVideoDetails[0])
+    console.log(playlistWithAllVideoDetails[0].videoId)
     
     //emptying out the buttons on screen for Div formatting
     let choiceButtonsDiv = document.getElementById('choiceButtonsDiv');
@@ -248,7 +255,38 @@ function playlistCreation(playlistWithAllVideoDetails) {
     inputHolderDiv.style.flexDirection = 'column';
     inputHolderDiv.style.alignItems = 'center';
 
+    choiceButtonsDiv.innerHTML = `                    <div id="playlist">
+    <!-- this contains a video thumbnail, title and video author -->
+    <div class="playlistItem">
+        <div id="thumbnailContainer">
+            <img src="${playlistWithAllVideoDetails[0].thumbnailPictureUrl}" alt="Thumbnail">
+        </div>
+        <div id="titleAuthorContainer">
+            <div id="titleContainer">
+
+                ${playlistWithAllVideoDetails[0].videoTitle}
+
+            </div>
+            <div id="authorContainer">
+
+                ${playlistWithAllVideoDetails[0].videoUploader}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="videoPlayer">
+    <iframe id="videoElement" 
+    
+    width="100%" height="100%"
+        src="https://www.youtube.com/embed/${playlistWithAllVideoDetails[0].videoId}" frameborder="0" allow="encrypted-media"
+        allowfullscreen=""></iframe>
+</div>`
+
     console.log(playlistWithAllVideoDetails)
 
+    //this might be relevant in the youtube embed styling
+    // class="style-scope ytd-watch-flexy" 
 
 }

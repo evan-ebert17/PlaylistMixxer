@@ -62,7 +62,7 @@ img {
 }
 
 .choiceButtons button:hover {
-  transform: scale(1.2);
+  transform: scale(1.05);
   box-shadow: var(--drop_shadow);
 }
 
@@ -99,6 +99,46 @@ h3 {
 .shuffleChoice:hover {
   cursor: pointer;
   background-color: #cccccc
+}
+
+.playlist {
+  height: 100%;
+  width: 35%;
+  margin: 1%;
+}
+
+.playlistItem {
+  height: 10%;
+  /* width: 30%; */
+  display: flex;
+  margin-left: 0.25vw;
+}
+
+#titleAuthorContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#thumbnailContainer {
+  /* height: 200px; Set the desired height */
+  width: 13%; /* Set the desired width */
+  border-radius: 50%;
+  overflow: hidden; /* Clip the image to the container's rounded shape */
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  background-color: #f0f0f0; /* Optional: Background color for the container */
+}
+
+.imageSizing {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#videoPlayer {
+  width: 65%;
+  margin: 1%;
 }
 
 @keyframes slide_down {
