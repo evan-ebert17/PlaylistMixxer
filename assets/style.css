@@ -101,10 +101,11 @@ h3 {
   background-color: #cccccc
 }
 
-.playlist {
+#playlist {
   height: 100%;
-  width: 35%;
+  /* width: 35%; */
   margin: 1%;
+  overflow: auto;
 }
 
 .playlistItem {
@@ -137,9 +138,27 @@ h3 {
 }
 
 #videoPlayer {
-  width: 65%;
+  width: 60vw;
   margin: 1%;
 }
+
+.titleContainer {
+  width: 100%;
+}
+
+.authorContainer {
+ width: 100%;
+}
+
+.titleInfo {
+  font-size: 20px;
+}
+
+.authorInfo {
+  font-size: 12px;
+ }
+
+
 
 @keyframes slide_down {
   0% {

@@ -9,7 +9,7 @@ function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, i
     this.videoUploader = videoUploader;
     //this will be used to tell if our playlist is done playing
     this.isLastItem = isLastItem;
-    if(isLastItem === undefined) {
+    if (isLastItem === undefined) {
         this.isLastItem = false;
     }
 }
@@ -56,7 +56,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
                 //this is getting the unique id/url of the video at index i.
                 let individualVideo = data.items[i].snippet.resourceId.videoId;
                 let individualVideoTitle = data.items[i].snippet.title;
-                let individualVideoUploader =  data.items[i].snippet.videoOwnerChannelTitle;
+                let individualVideoUploader = data.items[i].snippet.videoOwnerChannelTitle;
 
                 //the thumbnails url is just the video url with this formatting
                 let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
@@ -85,6 +85,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
         }
         )
+
 
 
 
@@ -171,20 +172,20 @@ function trueRandomShuffle(playlistItemsToShuffle) {
     //this is so we can create a conditional loop later for "while... != true"
     let lastItemInPlaylist = new VideoDetails(
         //videoId
-        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length-1].videoId,
+        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length - 1].videoId,
         //videoTitle
-        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length-1].videoTitle,
+        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length - 1].videoTitle,
         //thumbnailUrl
-        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length-1].thumbnailPictureUrl,
+        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length - 1].thumbnailPictureUrl,
         //videoUploader
-        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length-1].videoUploader,
+        videosThatHaveBeenShuffled[videosThatHaveBeenShuffled.length - 1].videoUploader,
         //isLastItem
         true
     )
 
 
     //removing last element
-    videosThatHaveBeenShuffled.splice(videosThatHaveBeenShuffled.length-1,1)
+    videosThatHaveBeenShuffled.splice(videosThatHaveBeenShuffled.length - 1, 1)
 
     //replacing last element with our isLastItem flagged video.
     videosThatHaveBeenShuffled.push(lastItemInPlaylist)
@@ -233,9 +234,6 @@ function playlistTypeSelector(arrayOfAllVideos) {
 
 function playlistCreation(playlistWithAllVideoDetails) {
 
-    console.log(playlistWithAllVideoDetails[0])
-    console.log(playlistWithAllVideoDetails[0].videoId)
-    
     //emptying out the buttons on screen for Div formatting
     let choiceButtonsDiv = document.getElementById('choiceButtonsDiv');
     choiceButtonsDiv.innerHTML = ''
@@ -255,38 +253,45 @@ function playlistCreation(playlistWithAllVideoDetails) {
     inputHolderDiv.style.flexDirection = 'column';
     inputHolderDiv.style.alignItems = 'center';
 
-    choiceButtonsDiv.innerHTML = `                    <div id="playlist">
-    <!-- this contains a video thumbnail, title and video author -->
-    <div class="playlistItem">
+    choiceButtonsDiv.innerHTML = '';
+    const part1OfPlaylistInnerHTMLConstruction = `                    <div id="playlist">`
+    //
+    const playlistDiv = document.getElementById("playlist");
+    let result = "";
+    for (i = 0; i < playlistWithAllVideoDetails.length; i++) {
+
+
+        let currentPlaylistItem = `<div class="playlistItem">
         <div id="thumbnailContainer">
-            <img src="${playlistWithAllVideoDetails[0].thumbnailPictureUrl}" alt="Thumbnail">
+            <img src="${playlistWithAllVideoDetails[i].thumbnailPictureUrl}" alt="Thumbnail">
         </div>
         <div id="titleAuthorContainer">
             <div id="titleContainer">
 
-                ${playlistWithAllVideoDetails[0].videoTitle}
+            <span class="titleInfo">${playlistWithAllVideoDetails[i].videoTitle}</span>
 
             </div>
             <div id="authorContainer">
 
-                ${playlistWithAllVideoDetails[0].videoUploader}
+            <span class="authorInfo">${playlistWithAllVideoDetails[i].videoUploader}</span>
 
             </div>
         </div>
 
-    </div>
-</div>
-<div id="videoPlayer">
-    <iframe id="videoElement" 
-    
-    width="100%" height="100%"
-        src="https://www.youtube.com/embed/${playlistWithAllVideoDetails[0].videoId}" frameborder="0" allow="encrypted-media"
-        allowfullscreen=""></iframe>
-</div>`
+    </div>`
 
-    console.log(playlistWithAllVideoDetails)
+        result = result + currentPlaylistItem;
+    }
+
+    let currentVideoPlaying = 
+                    `<div id = "videoPlayer">
+                    <iframe id="videoElement" width="100%" height="100%" src="https://www.youtube.com/embed/${playlistWithAllVideoDetails[0].videoId}" frameborder="0" allow="autoplay; encrypted-media"allowfullscreen=""></iframe>
+                    </div >`
+
+    choiceButtonsDiv.innerHTML = part1OfPlaylistInnerHTMLConstruction + result + `</div>` +  currentVideoPlaying ;
 
     //this might be relevant in the youtube embed styling
     // class="style-scope ytd-watch-flexy" 
 
 }
+
