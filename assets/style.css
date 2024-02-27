@@ -115,6 +115,11 @@ h3 {
   margin-left: 0.25vw;
 }
 
+.playlistItem:hover {
+  cursor: pointer;
+  background-color: #cccccc;
+}
+
 #titleAuthorContainer {
   display: flex;
   flex-wrap: wrap;

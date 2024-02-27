@@ -258,10 +258,10 @@ function playlistCreation(playlistWithAllVideoDetails) {
     //
     const playlistDiv = document.getElementById("playlist");
     let result = "";
-    for (i = 0; i < playlistWithAllVideoDetails.length; i++) {
+    for (let i = 0; i < playlistWithAllVideoDetails.length; i++) {
 
 
-        let currentPlaylistItem = `<div class="playlistItem">
+        let currentPlaylistItem = `<div class="playlistItem" id="playlistItem${i}">
         <div id="thumbnailContainer">
             <img src="${playlistWithAllVideoDetails[i].thumbnailPictureUrl}" alt="Thumbnail">
         </div>
@@ -283,15 +283,26 @@ function playlistCreation(playlistWithAllVideoDetails) {
         result = result + currentPlaylistItem;
     }
 
-    let currentVideoPlaying = 
-                    `<div id = "videoPlayer">
-                    <iframe id="videoElement" width="100%" height="100%" src="https://www.youtube.com/embed/${playlistWithAllVideoDetails[0].videoId}" frameborder="0" allow="autoplay; encrypted-media"allowfullscreen=""></iframe>
+    let currentVideoPlaying =
+        `<div id = "videoPlayer">
+                    <iframe id="videoElement" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${playlistWithAllVideoDetails[0].videoId}" frameborder="0" allow="autoplay; encrypted-media"allowfullscreen=""></iframe>
                     </div >`
 
-    choiceButtonsDiv.innerHTML = part1OfPlaylistInnerHTMLConstruction + result + `</div>` +  currentVideoPlaying ;
+    choiceButtonsDiv.innerHTML = part1OfPlaylistInnerHTMLConstruction + result + `</div>` + currentVideoPlaying;
 
-    //this might be relevant in the youtube embed styling
-    // class="style-scope ytd-watch-flexy" 
+    for (let i = 0; i < playlistWithAllVideoDetails.length; i++) {
 
+        let currentVideoId = playlistWithAllVideoDetails[i].videoId
+        document.getElementById(`playlistItem${i}`).addEventListener('click', function () {
+
+            document.getElementById("videoElement").setAttribute('src', `https://www.youtube-nocookie.com/embed/${currentVideoId}`)
+
+        })
+    }
 }
+
+//this might be relevant in the youtube embed styling
+// class="style-scope ytd-watch-flexy" 
+
+
 
