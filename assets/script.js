@@ -57,7 +57,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
                 let individualVideo = data.items[i].snippet.resourceId.videoId;
                 let individualVideoTitle = data.items[i].snippet.title;
                 let individualVideoUploader = data.items[i].snippet.videoOwnerChannelTitle;
-
+                
                 //the thumbnails url is just the video url with this formatting
                 let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
 
@@ -123,10 +123,11 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
                     //this is getting the unique id/url of the video at index i.
                     let individualVideo = data.items[i].snippet.resourceId.videoId;
                     let individualVideoTitle = data.items[i].snippet.title;
+                    let individualVideoUploader = data.items[i].snippet.videoOwnerChannelTitle;
                     //the thumbnails url is just the video url with this formatting
                     let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
 
-                    const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl)
+                    const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl, individualVideoUploader)
                     //sending them to our array up in the button eventListener
 
                     videoItems.push(completeVideoObject);
