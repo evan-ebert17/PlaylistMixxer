@@ -45,15 +45,16 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
                 return;
             }
             else {
-                response.json()
+                return response.json()
             }
         }
             )
         .then(data => {
+            console.log(data)
             if(data === undefined) {
                 return;
             }
-            console.log(data)
+            
             let loader = document.getElementById("loader");
 
             loader.style.visibility = 'visible';

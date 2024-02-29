@@ -4,7 +4,7 @@
 [Deployed Application](https://evan-ebert17.github.io/PlaylistShuffler/)
 
 ## Screen Shots
- ![Work-Day-Scheduler](Assets/75338dd73d706240fa56206b5770b0e4.png)
+ ![Playlist Shuffler](Assets/75338dd73d706240fa56206b5770b0e4.png)
 
 ##### Table of Contents  
 [Purpose](#purpose)  
