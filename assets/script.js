@@ -2,14 +2,15 @@
 //test url https://www.youtube.com/playlist?list=PL2uxd6YWj7PKk4LnkWZEyqpcvnXmv8Iuf
 
 //creating a "Video" objects constructor:
-function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, isLastItem) {
+function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, itemIndex, isLastItem) {
     this.videoId = videoId;
     this.videoTitle = videoTitle;
     this.thumbnailPictureUrl = thumbnailPictureUrl;
     this.videoUploader = videoUploader;
-    if(videoUploader === undefined) {
+    if (videoUploader === undefined) {
         this.videoUploader = '';
     }
+    this.itemIndex = itemIndex;
     //this will be used to tell if our playlist is done playing
     this.isLastItem = isLastItem;
     if (isLastItem === undefined) {
@@ -40,10 +41,10 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
     //we fetch the url
     fetch(apiUrl)
         .then(response => {
-            if(response.status === 404) {
+            if (response.status === 404) {
                 alert("The playlist does not exist OR is private, try another.");
                 return;
-            } else if (response.status === 400){
+            } else if (response.status === 400) {
                 alert("Please enter a playlist URL.");
                 return;
             }
@@ -51,13 +52,13 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
                 return response.json()
             }
         }
-            )
+        )
         .then(data => {
             console.log(data)
-            if(data === undefined) {
+            if (data === undefined) {
                 return;
             }
-            
+
             let loader = document.getElementById("loader");
 
             loader.style.visibility = 'visible';
@@ -75,12 +76,13 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
                 let individualVideo = data.items[i].snippet.resourceId.videoId;
                 let individualVideoTitle = data.items[i].snippet.title;
                 let individualVideoUploader = data.items[i].snippet.videoOwnerChannelTitle;
+                let currentItemIndex = i+1
 
                 //the thumbnails url is just the video url with this formatting
                 let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
 
                 //creating the VideoDetails object which holds the necissary information for creating the playlist later.
-                const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl, individualVideoUploader)
+                const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl, individualVideoUploader,currentItemIndex)
                 //sending them to our array to be shuffled
                 arrayOfAllVideos.push(completeVideoObject);
             }
@@ -143,8 +145,8 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
                     let individualVideoUploader = data.items[i].snippet.videoOwnerChannelTitle
                     //the thumbnails url is just the video url with this formatting
                     let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
-
-                    const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl, individualVideoUploader)
+                    let currentItemIndex = i+51;
+                    const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl, individualVideoUploader, currentItemIndex)
                     //sending them to our array up in the button eventListener
 
                     videoItems.push(completeVideoObject);
@@ -212,19 +214,44 @@ function trueRandomShuffle(playlistItemsToShuffle) {
 
 }
 
+function rangeShuffle(playlistItemsToShuffle, rangeStart, rangeEnd) {
+    let videosThatHaveBeenShuffled = []
+
+    let rangeOfVideos = [];
+
+    for(let i = rangeStart; i < rangeEnd; i++) {
+        rangeOfVideos.push(playlistItemsToShuffle[i])
+    }
+
+    while (rangeOfVideos.length != 0) {
+
+        var currentRandomNumber = Math.floor(Math.random() * rangeOfVideos.length);
+
+        var randomVideoFromUnshuffledPlaylist = rangeOfVideos[currentRandomNumber]
+        console.log(randomVideoFromUnshuffledPlaylist)
+        videosThatHaveBeenShuffled.push(randomVideoFromUnshuffledPlaylist)
+        console.log(videosThatHaveBeenShuffled)
+        rangeOfVideos.splice(currentRandomNumber, 1);
+
+    }
+
+    playlistCreation(videosThatHaveBeenShuffled)
+}
+
 function playlistTypeSelector(arrayOfAllVideos) {
     //this function returns the choice a user made in their preferred shuffle method and generates the card to make that choice.
     var choiceButtonsDiv = document.getElementById('choiceButtonsDiv')
 
     //this card creates 3 buttons that will determine the "3" choices the user can make.
     choiceButtonsDiv.innerHTML = `
-    
+
                     <button id="trueRandom" class="shuffleChoice">true-random shuffle</button>
-                    <button id="rangeRandom" class="shuffleChoice">num shuffle</button>
-                    
-    
+
+
+                    <button id="rangeRandom" type="button" class="shuffleChoice">num shuffle</button>
+
     `
-// <button id="smartRandom" class="shuffleChoice">smart shuffle</button> add this later.
+    // <button id="smartRandom" class="shuffleChoice">smart shuffle</button> add this later.
 
     //this commented out stuff is a potential dim feature on the button card generation
 
@@ -233,8 +260,10 @@ function playlistTypeSelector(arrayOfAllVideos) {
     // dimWebpage.style.display = "block"
 
     var trueRandomShuffleButton = document.getElementById("trueRandom")
-    var rangeRandomShuffleButton = document.getElementById("trueRandom")
-    var smartRandomShuffleButton = document.getElementById("trueRandom")
+    var rangeRandomShuffleButton = document.getElementById("rangeRandom")
+    // var submitRangeRandomShuffleButton = document.getElementById("submitRange")
+    // var userInputtedRange = document.getElementById("submitRange").value
+    // var smartRandomShuffleButton = document.getElementById("trueRandom")
 
     trueRandomShuffleButton.addEventListener('click', () => {
         trueRandomShuffle(arrayOfAllVideos)
@@ -242,17 +271,32 @@ function playlistTypeSelector(arrayOfAllVideos) {
 
     rangeRandomShuffleButton.addEventListener('click', () => {
         //eventually change to rangeRandomShuffle()
-        //trueRandomShuffle(arrayOfAllVideos)
+        let userInputtedRangeStart = prompt("Please specify the start of the range: ", `0 - ${arrayOfAllVideos.length}`)
+        while (userInputtedRangeStart === '' || userInputtedRangeStart > arrayOfAllVideos.length) {
+            alert("Please provide a range IN range.")
+            userInputtedRangeStart = prompt("Please provide a range: ", `0 - ${arrayOfAllVideos.length}`)
+        }
+
+        let userInputtedRangeEnd = prompt("Please specify the end of the range: ", `${userInputtedRangeStart} - ${arrayOfAllVideos.length}`)
+
+        while (userInputtedRangeEnd === "" || userInputtedRangeEnd > arrayOfAllVideos.length || userInputtedRangeStart > userInputtedRangeEnd) {
+            alert("Please provide a range IN range.")
+            userInputtedRangeEnd = prompt("Please provide a range: ", `${userInputtedRangeStart} - ${arrayOfAllVideos.length}`)
+        }
+
+        rangeShuffle(arrayOfAllVideos, parseInt(userInputtedRangeStart), parseInt(userInputtedRangeEnd))
     })
 
-    smartRandomShuffleButton.addEventListener('click', () => {
-        //eventually change to smartRandomShuffle()
-        //trueRandomShuffle(arrayOfAllVideos)
-    })
+    // smartRandomShuffleButton.addEventListener('click', () => {
+    //     //eventually change to smartRandomShuffle()
+    //     //trueRandomShuffle(arrayOfAllVideos)
+    // })
 
 }
 
 function playlistCreation(playlistWithAllVideoDetails) {
+
+    console.log(playlistWithAllVideoDetails)
 
     //emptying out the buttons on screen for Div formatting
     let choiceButtonsDiv = document.getElementById('choiceButtonsDiv');
@@ -280,7 +324,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
     let result = "";
     for (let i = 0; i < playlistWithAllVideoDetails.length; i++) {
 
-
+        console.log(playlistWithAllVideoDetails[i])
         let currentPlaylistItem = `<div class="playlistItem" id="playlistItem${i}">
         <div id="thumbnailContainer">
             <img class="img-thumbnail" src="${playlistWithAllVideoDetails[i].thumbnailPictureUrl}" alt="Thumbnail">
@@ -332,7 +376,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
     //                                 <div class="input-group-append">
     //                                     <button id="generatePlaylist" class="btn btn-dark"
     //                                         type="button">Generate Playlist</button>
-                                            
+
     //                                 </div>
     //                                 <div id="loader" class="lds-ellipsis">
     //                                     <div></div>
