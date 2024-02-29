@@ -4,13 +4,13 @@
 
 :root {
   --dimmed_color: rgba(0, 0, 0, 0.5);
-  --grey: #4E4A59;
+  --grey: #AAC8F3;
   --accent_green: #29BF12;
   --drop_shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 body {
-  background-color: var(--dimmed_color);
+  background-color: var(--grey);
 }
 
 .topContentHolder {
@@ -23,7 +23,7 @@ body {
 .centeredDiv {
   animation: fade_in 1s, slide_down 1.2s ease;
   border-radius: 25px;
-  border: 2px solid #29BF12;
+  /* border: 2px solid #29BF12; */
   height: 75%;
   background-color: #fff;
   display: flex;
@@ -73,7 +73,8 @@ h3 {
 .shuffleChoice {
   width: 100%;
   border-radius: 25px;
-  border-width: 0.5px;
+  border-width: 0px;
+  
 
 }
 
@@ -92,7 +93,7 @@ h3 {
   width: 34.25em;
 }
 
-.textHolder h2 {
+.textHolder h3 {
   text-align: center;
 }
 
@@ -127,13 +128,13 @@ h3 {
 
 #thumbnailContainer {
   /* height: 200px; Set the desired height */
-  width: 13%; /* Set the desired width */
-  border-radius: 50%;
+  width: 100px; /* Set the desired width */
+  /* border-radius: 50%; */
   overflow: hidden; /* Clip the image to the container's rounded shape */
   display: flex;
   justify-content: center;
   /* align-items: center; */
-  background-color: #f0f0f0; /* Optional: Background color for the container */
+  /* background-color: #f0f0f0; Optional: Background color for the container */
 }
 
 .imageSizing {
@@ -141,6 +142,13 @@ h3 {
   height: 100%;
   object-fit: cover;
 }
+
+/* bootstrap style slight override */
+.input-group>.input-group-append:not(:last-child)>.btn {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
 
 #videoPlayer {
   width: 60vw;
@@ -190,7 +198,8 @@ h3 {
 /* LOADING ICON CSS */
 
 .lds-ellipsis {
-  display: none;
+  visibility: hidden;
+  display: flex;
   position: relative;
   width: 80px;
   height: 45px;
@@ -198,7 +207,7 @@ h3 {
 
 .lds-ellipsis div {
   position: absolute;
-  top: 33px;
+  top: 17px;
   width: 13px;
   height: 13px;
   border-radius: 50%;
