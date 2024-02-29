@@ -4,13 +4,13 @@
 
 :root {
   --dimmed_color: rgba(0, 0, 0, 0.5);
-  --grey: #AAC8F3;
+  --blue: #AAC8F3;
   --accent_green: #29BF12;
   --drop_shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 body {
-  background-color: var(--grey);
+  background-color: var(--blue);
 }
 
 .topContentHolder {
@@ -74,7 +74,7 @@ h3 {
   width: 100%;
   border-radius: 25px;
   border-width: 0px;
-  
+
 
 }
 
@@ -128,9 +128,11 @@ h3 {
 
 #thumbnailContainer {
   /* height: 200px; Set the desired height */
-  width: 100px; /* Set the desired width */
+  width: 100px;
+  /* Set the desired width */
   /* border-radius: 50%; */
-  overflow: hidden; /* Clip the image to the container's rounded shape */
+  overflow: hidden;
+  /* Clip the image to the container's rounded shape */
   display: flex;
   justify-content: center;
   /* align-items: center; */
@@ -160,7 +162,7 @@ h3 {
 }
 
 .authorContainer {
- width: 100%;
+  width: 100%;
 }
 
 .titleInfo {
@@ -169,7 +171,7 @@ h3 {
 
 .authorInfo {
   font-size: 12px;
- }
+}
 
 
 

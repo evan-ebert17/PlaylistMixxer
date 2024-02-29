@@ -42,7 +42,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
             console.log(data)
             let loader = document.getElementById("loader");
 
-            loader.style.visibility = 'visible';
+            loader.style.display = 'inline-block';
             var nextPageToken = data.nextPageToken;
             let arrayOfAllVideos = [];
 
@@ -69,14 +69,14 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
             //if we dont find that the playlist requested has another page, no worries for the complicated pagination!
             if (nextPageToken === undefined) {
-                loader.style.visibility = 'hidden';
+                loader.style.display = 'none';
                 //after we're done putting those videos into our array, we can call our shuffling algo.
                 playlistTypeSelector(arrayOfAllVideos);
             } else {
 
                 putVideosInPlaylist(formattedPlaylistID, nextPageToken, arrayOfAllVideos)
                     .then(finalResult => {
-                        loader.style.visibility = 'hidden';
+                        loader.style.display = 'none';
                         playlistTypeSelector(finalResult);
                     }
                     )
@@ -123,11 +123,10 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
                     //this is getting the unique id/url of the video at index i.
                     let individualVideo = data.items[i].snippet.resourceId.videoId;
                     let individualVideoTitle = data.items[i].snippet.title;
-                    let individualVideoUploader = data.items[i].snippet.videoOwnerChannelTitle;
                     //the thumbnails url is just the video url with this formatting
                     let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
 
-                    const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl, individualVideoUploader)
+                    const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl)
                     //sending them to our array up in the button eventListener
 
                     videoItems.push(completeVideoObject);
@@ -195,21 +194,6 @@ function trueRandomShuffle(playlistItemsToShuffle) {
 
 }
 
-function rangeShuffle(playlistItemsToShuffle) {
-        //this is returning the snippet section of the api information
-        let videosThatHaveBeenShuffled = []
-
-        //THIS IS RANGE SHUFFLE!
-        while (playlistItemsToShuffle.length != 0) {
-    
-            var currentRandomNumber = Math.floor(Math.random() * playlistItemsToShuffle.length);
-            var randomVideoFromUnshuffledPlaylist = playlistItemsToShuffle[currentRandomNumber]
-            videosThatHaveBeenShuffled.push(randomVideoFromUnshuffledPlaylist)
-            playlistItemsToShuffle.splice(currentRandomNumber, 1);
-    
-        }
-}
-
 function playlistTypeSelector(arrayOfAllVideos) {
     //this function returns the choice a user made in their preferred shuffle method and generates the card to make that choice.
     var choiceButtonsDiv = document.getElementById('choiceButtonsDiv')
@@ -255,7 +239,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
     choiceButtonsDiv.innerHTML = ''
 
     //creating a green border to the left of where the videos will be played
-    //choiceButtonsDiv.style.borderLeft = '2px solid #29BF12'
+    choiceButtonsDiv.style.borderLeft = '2px solid #29BF12'
     let centeredDiv = document.getElementById('centeredDiv');
 
     //we're going to take our main card and remove the flex-direction tag, condensing everything
@@ -279,7 +263,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
 
         let currentPlaylistItem = `<div class="playlistItem" id="playlistItem${i}">
         <div id="thumbnailContainer">
-            <img src="${playlistWithAllVideoDetails[i].thumbnailPictureUrl}" class="img-thumbnail" alt="Thumbnail">
+            <img src="${playlistWithAllVideoDetails[i].thumbnailPictureUrl}" alt="Thumbnail">
         </div>
         <div id="titleAuthorContainer">
             <div id="titleContainer">
@@ -319,6 +303,3 @@ function playlistCreation(playlistWithAllVideoDetails) {
 
 //this might be relevant in the youtube embed styling
 // class="style-scope ytd-watch-flexy" 
-
-
-
