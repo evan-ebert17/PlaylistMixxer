@@ -7,6 +7,9 @@ function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, i
     this.videoTitle = videoTitle;
     this.thumbnailPictureUrl = thumbnailPictureUrl;
     this.videoUploader = videoUploader;
+    if(videoUploader === undefined) {
+        this.videoUploader = '';
+    }
     //this will be used to tell if our playlist is done playing
     this.isLastItem = isLastItem;
     if (isLastItem === undefined) {
@@ -137,10 +140,11 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
                     //this is getting the unique id/url of the video at index i.
                     let individualVideo = data.items[i].snippet.resourceId.videoId;
                     let individualVideoTitle = data.items[i].snippet.title;
+                    let individualVideoUploader = data.items[i].snippet.videoOwnerChannelTitle
                     //the thumbnails url is just the video url with this formatting
                     let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
 
-                    const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl)
+                    const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl, individualVideoUploader)
                     //sending them to our array up in the button eventListener
 
                     videoItems.push(completeVideoObject);
@@ -217,9 +221,11 @@ function playlistTypeSelector(arrayOfAllVideos) {
     
                     <button id="trueRandom" class="shuffleChoice">true-random shuffle</button>
                     <button id="rangeRandom" class="shuffleChoice">num shuffle</button>
-                    <button id="smartRandom" class="shuffleChoice">smart shuffle</button>
+                    
     
     `
+// <button id="smartRandom" class="shuffleChoice">smart shuffle</button> add this later.
+
     //this commented out stuff is a potential dim feature on the button card generation
 
     // var cardLocation = document.getElementById("floatingChoiceMenu");
@@ -315,7 +321,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
     }
 
     let textHolderDiv = document.getElementById("textHolder")
-    textHolderDiv.innerHTML = ''
+    textHolderDiv.style.display = 'none';
 
 
     // This comment block represents the inputbar + button to generate a new playlist & subsequent buttons
