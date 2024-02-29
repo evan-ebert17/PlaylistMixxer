@@ -42,7 +42,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
             console.log(data)
             let loader = document.getElementById("loader");
 
-            loader.style.display = 'inline-block';
+            loader.style.visibility = 'visible';
             var nextPageToken = data.nextPageToken;
             let arrayOfAllVideos = [];
 
@@ -69,14 +69,14 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
             //if we dont find that the playlist requested has another page, no worries for the complicated pagination!
             if (nextPageToken === undefined) {
-                loader.style.display = 'none';
+                loader.style.visibility = 'hidden';
                 //after we're done putting those videos into our array, we can call our shuffling algo.
                 playlistTypeSelector(arrayOfAllVideos);
             } else {
 
                 putVideosInPlaylist(formattedPlaylistID, nextPageToken, arrayOfAllVideos)
                     .then(finalResult => {
-                        loader.style.display = 'none';
+                        loader.style.visibility = 'hidden';
                         playlistTypeSelector(finalResult);
                     }
                     )
@@ -239,7 +239,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
     choiceButtonsDiv.innerHTML = ''
 
     //creating a green border to the left of where the videos will be played
-    choiceButtonsDiv.style.borderLeft = '2px solid #29BF12'
+    // choiceButtonsDiv.style.borderLeft = '2px solid #29BF12'
     let centeredDiv = document.getElementById('centeredDiv');
 
     //we're going to take our main card and remove the flex-direction tag, condensing everything
@@ -263,7 +263,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
 
         let currentPlaylistItem = `<div class="playlistItem" id="playlistItem${i}">
         <div id="thumbnailContainer">
-            <img src="${playlistWithAllVideoDetails[i].thumbnailPictureUrl}" alt="Thumbnail">
+            <img class="img-thumbnail" src="${playlistWithAllVideoDetails[i].thumbnailPictureUrl}" alt="Thumbnail">
         </div>
         <div id="titleAuthorContainer">
             <div id="titleContainer">
@@ -299,6 +299,28 @@ function playlistCreation(playlistWithAllVideoDetails) {
 
         })
     }
+
+    let textHolderDiv = document.getElementById("textHolder")
+    textHolderDiv.innerHTML = ''
+
+
+    // This comment block represents the inputbar + button to generate a new playlist & subsequent buttons
+
+    // <div class="input-group mb-3">
+    //                                 <input type="text" id="videoURL" class="form-control" placeholder="Enter URL here"
+    //                                     aria-label="Enter URL here" aria-describedby="basic-addon2">
+    //                                 <div class="input-group-append">
+    //                                     <button id="generatePlaylist" class="btn btn-dark"
+    //                                         type="button">Generate Playlist</button>
+                                            
+    //                                 </div>
+    //                                 <div id="loader" class="lds-ellipsis">
+    //                                     <div></div>
+    //                                     <div></div>
+    //                                     <div></div>
+    //                                     <div></div>
+    //                                 </div>
+    //                             </div>
 }
 
 //this might be relevant in the youtube embed styling
