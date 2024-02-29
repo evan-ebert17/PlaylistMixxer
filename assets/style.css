@@ -109,11 +109,16 @@ h3 {
   overflow: auto;
 }
 
+iframe {
+  border-radius: 5px;
+}
+
 .playlistItem {
   height: 10%;
   /* width: 30%; */
   display: flex;
   margin-left: 0.25vw;
+  border-radius: 5px;
 }
 
 .playlistItem:hover {

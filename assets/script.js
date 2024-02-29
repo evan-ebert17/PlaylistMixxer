@@ -36,9 +36,23 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
     //we fetch the url
     fetch(apiUrl)
-        .then(response => response.json())
+        .then(response => {
+            if(response.status === 404) {
+                alert("The playlist does not exist OR is private, try another.");
+                return;
+            } else if (response.status === 400){
+                alert("Please enter a playlist URL.");
+                return;
+            }
+            else {
+                response.json()
+            }
+        }
+            )
         .then(data => {
-
+            if(data === undefined) {
+                return;
+            }
             console.log(data)
             let loader = document.getElementById("loader");
 
@@ -85,7 +99,6 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
         }
         )
-
 
 
 
@@ -285,7 +298,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
 
     let currentVideoPlaying =
         `<div id = "videoPlayer">
-                    <iframe id="videoElement" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${playlistWithAllVideoDetails[0].videoId}" frameborder="0" allow="autoplay; encrypted-media"allowfullscreen=""></iframe>
+                    <iframe id="videoElement" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${playlistWithAllVideoDetails[0].videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div >`
 
     choiceButtonsDiv.innerHTML = part1OfPlaylistInnerHTMLConstruction + result + `</div>` + currentVideoPlaying;
