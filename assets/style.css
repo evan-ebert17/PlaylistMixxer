@@ -30,6 +30,7 @@ body {
   flex-direction: column;
   align-items: center;
   box-shadow: var(--drop_shadow);
+  overflow: hidden;
 }
 
 .wrapper {
@@ -105,8 +106,8 @@ h3 {
 #playlist {
   height: 100%;
   /* width: 35%; */
-  margin: 1%;
-  overflow: auto;
+  margin: 18px;
+  overflow:scroll
 }
 
 iframe {
@@ -133,7 +134,7 @@ iframe {
 
 #thumbnailContainer {
   /* height: 200px; Set the desired height */
-  width: 100px;
+  /* width: 100px; */
   /* Set the desired width */
   /* border-radius: 50%; */
   overflow: hidden;
