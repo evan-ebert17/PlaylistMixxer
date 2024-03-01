@@ -10,7 +10,7 @@
 }
 
 body {
-  background-color: var(--blue);
+  background-color: #222831;
 }
 
 .topContentHolder {
@@ -61,7 +61,6 @@ img {
   display: flex;
   margin: 1%;
   align-items: center;
-
 }
 
 .choiceButtons button:hover {
@@ -81,6 +80,8 @@ h3 {
   justify-content: center;
   align-items: center;
   margin: 5%;
+  background-color: #323743;
+  color: white;
 }
 
 .textHolder {
@@ -106,10 +107,10 @@ h3 {
   text-align: center;
 }
 
-.shuffleChoice:hover {
+/* .shuffleChoice:hover {
   cursor: pointer;
   background-color: #cccccc
-}
+} */
 
 #playlist {
   height: 100%;
@@ -142,6 +143,7 @@ iframe {
 #titleAuthorContainer {
   display: flex;
   flex-wrap: wrap;
+  margin-left: 1%
 }
 
 #thumbnailContainer {
