@@ -349,7 +349,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
 
     let currentVideoPlaying =
         `<div id = "videoPlayer">
-                    <iframe id="videoElement" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${playlistWithAllVideoDetails[0].videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe id="videoElement" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${playlistWithAllVideoDetails[0].videoId}?autoplay=1&" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div >`
 
     choiceButtonsDiv.innerHTML = part1OfPlaylistInnerHTMLConstruction + result + `</div>` + currentVideoPlaying;

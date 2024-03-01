@@ -83,7 +83,11 @@ h3 {
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin: auto 1% auto 1%;
+  margin: 5%;
+}
+
+.text {
+  margin: 1%;
 }
 
 #inputHolder {
