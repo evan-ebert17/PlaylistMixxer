@@ -76,13 +76,13 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
                 let individualVideo = data.items[i].snippet.resourceId.videoId;
                 let individualVideoTitle = data.items[i].snippet.title;
                 let individualVideoUploader = data.items[i].snippet.videoOwnerChannelTitle;
-                let currentItemIndex = i+1
+                let currentItemIndex = i + 1
 
                 //the thumbnails url is just the video url with this formatting
                 let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
 
                 //creating the VideoDetails object which holds the necissary information for creating the playlist later.
-                const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl, individualVideoUploader,currentItemIndex)
+                const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl, individualVideoUploader, currentItemIndex)
                 //sending them to our array to be shuffled
                 arrayOfAllVideos.push(completeVideoObject);
             }
@@ -145,7 +145,7 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
                     let individualVideoUploader = data.items[i].snippet.videoOwnerChannelTitle
                     //the thumbnails url is just the video url with this formatting
                     let individualVideoThumbnailUrl = `https://i.ytimg.com/vi/${individualVideo}/default.jpg`
-                    let currentItemIndex = i+51;
+                    let currentItemIndex = i + 51;
                     const completeVideoObject = new VideoDetails(individualVideo, individualVideoTitle, individualVideoThumbnailUrl, individualVideoUploader, currentItemIndex)
                     //sending them to our array up in the button eventListener
 
@@ -219,7 +219,7 @@ function rangeShuffle(playlistItemsToShuffle, rangeStart, rangeEnd) {
 
     let rangeOfVideos = [];
 
-    for(let i = rangeStart; i < rangeEnd; i++) {
+    for (let i = rangeStart; i < rangeEnd; i++) {
         rangeOfVideos.push(playlistItemsToShuffle[i])
     }
 
@@ -317,6 +317,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
     inputHolderDiv.style.flexDirection = 'column';
     inputHolderDiv.style.alignItems = 'center';
 
+    choiceButtonsDiv.style.alignItems = 'normal'
     choiceButtonsDiv.innerHTML = '';
     const part1OfPlaylistInnerHTMLConstruction = `                    <div id="playlist">`
     //
@@ -346,21 +347,45 @@ function playlistCreation(playlistWithAllVideoDetails) {
 
         result = result + currentPlaylistItem;
     }
-
+    //---------------------------------------------
     let currentVideoPlaying =
         `<div id = "videoPlayer">
-                    <iframe id="videoElement" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${playlistWithAllVideoDetails[0].videoId}?autoplay=1&" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe id="videoElement" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${playlistWithAllVideoDetails[0].videoId}?autoplay=1&enablejsapi=1&origin=https://evan-ebert17.github.io/PlaylistShuffler/" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div >`
 
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+        event.target.playVideo();
+    }
+    //---------------------------------------------
     choiceButtonsDiv.innerHTML = part1OfPlaylistInnerHTMLConstruction + result + `</div>` + currentVideoPlaying;
+
+    let currentHighlightedVideo = [``];
 
     for (let i = 0; i < playlistWithAllVideoDetails.length; i++) {
 
         let currentVideoId = playlistWithAllVideoDetails[i].videoId
         document.getElementById(`playlistItem${i}`).addEventListener('click', function () {
 
-            document.getElementById("videoElement").setAttribute('src', `https://www.youtube-nocookie.com/embed/${currentVideoId}`)
-
+            document.getElementById("videoElement").setAttribute('src', `https://www.youtube-nocookie.com/embed/${currentVideoId}?autoplay=1&`)
+            document.getElementById(`playlistItem${i}`).setAttribute('class', 'currentVideo playlistItem')
         })
     }
 
