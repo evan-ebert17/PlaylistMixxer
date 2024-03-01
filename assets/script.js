@@ -229,12 +229,16 @@ function playlistTypeSelector(arrayOfAllVideos) {
 
     //this card creates 3 buttons that will determine the "3" choices the user can make.
     choiceButtonsDiv.innerHTML = `
-
+                    <div>
+                    
                     <button id="trueRandom" class="btn btn-dark shuffleChoice">True Random Shuffle</button>
-
-
+                    <p class="shuffleChoiceText">This shuffle shuffles the whole playlist <i>entirely</i> randomly.</p>
+                    </div>
+                    <div>
+                    
                     <button id="rangeRandom" type="button" class="btn btn-dark shuffleChoice">Range Random Shuffle</button>
-
+                    <p class="shuffleChoiceText" >This shuffle takes in a start and an end and shuffles the playlist between that range.</p>
+                    </div>
     `
     // <button id="smartRandom" class="shuffleChoice">smart shuffle</button> add this later.
 

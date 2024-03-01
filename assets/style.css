@@ -61,6 +61,7 @@ img {
   display: flex;
   margin: 1%;
   align-items: center;
+  justify-content: space-around;
 }
 
 .choiceButtons button:hover {
@@ -79,9 +80,14 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 5%;
+  /* margin: 5%; */
   background-color: #323743;
   color: white;
+}
+
+.shuffleChoiceText {
+  text-align: center;
+  width: 8vw;
 }
 
 .textHolder {
