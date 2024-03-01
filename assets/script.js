@@ -245,10 +245,10 @@ function playlistTypeSelector(arrayOfAllVideos) {
     //this card creates 3 buttons that will determine the "3" choices the user can make.
     choiceButtonsDiv.innerHTML = `
 
-                    <button id="trueRandom" class="shuffleChoice">true-random shuffle</button>
+                    <button id="trueRandom" class="shuffleChoice">True Random Shuffle</button>
 
 
-                    <button id="rangeRandom" type="button" class="shuffleChoice">num shuffle</button>
+                    <button id="rangeRandom" type="button" class="shuffleChoice">Range Random Shuffle</button>
 
     `
     // <button id="smartRandom" class="shuffleChoice">smart shuffle</button> add this later.
@@ -296,8 +296,6 @@ function playlistTypeSelector(arrayOfAllVideos) {
 
 function playlistCreation(playlistWithAllVideoDetails) {
 
-    console.log(playlistWithAllVideoDetails)
-
     //emptying out the buttons on screen for Div formatting
     let choiceButtonsDiv = document.getElementById('choiceButtonsDiv');
     choiceButtonsDiv.innerHTML = ''
@@ -325,7 +323,6 @@ function playlistCreation(playlistWithAllVideoDetails) {
     let result = "";
     for (let i = 0; i < playlistWithAllVideoDetails.length; i++) {
 
-        console.log(playlistWithAllVideoDetails[i])
         let currentPlaylistItem = `<div class="playlistItem" id="playlistItem${i}">
         <div id="thumbnailContainer">
             <img class="img-thumbnail" src="${playlistWithAllVideoDetails[i].thumbnailPictureUrl}" alt="Thumbnail">
@@ -367,25 +364,43 @@ function playlistCreation(playlistWithAllVideoDetails) {
             events: {
                 'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
+
             }
         });
     }
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
+        console.log(event)
         event.target.playVideo();
+    }
+
+    function onPlayerStateChange() {
+
     }
     //---------------------------------------------
     choiceButtonsDiv.innerHTML = part1OfPlaylistInnerHTMLConstruction + result + `</div>` + currentVideoPlaying;
 
-    let currentHighlightedVideo = [``];
+
+    //setting the "currentVideo" to the first element of our array, as that will always be the case
+    document.getElementById(`playlistItem${0}`).setAttribute('class', 'currentVideo playlistItem');
+
+    let currentHighlightedVideo = [document.getElementById(`playlistItem${0}`)];
 
     for (let i = 0; i < playlistWithAllVideoDetails.length; i++) {
 
         let currentVideoId = playlistWithAllVideoDetails[i].videoId
         document.getElementById(`playlistItem${i}`).addEventListener('click', function () {
 
-            document.getElementById("videoElement").setAttribute('src', `https://www.youtube-nocookie.com/embed/${currentVideoId}?autoplay=1&`)
+            document.getElementById("videoElement").setAttribute('src', `https://www.youtube-nocookie.com/embed/${currentVideoId}?autoplay=1&enablejsapi=1&origin=https://evan-ebert17.github.io/PlaylistShuffler/`)
             document.getElementById(`playlistItem${i}`).setAttribute('class', 'currentVideo playlistItem')
+
+            //This is taking our current video and putting into currentHighlightedVideo
+            //Then we take whatever was previously in there (to start with it is the first element of the array) and remove the 'currentVideo' class from it
+            //then we remove that element from the currentHighlightedVideo array altogether.
+
+            currentHighlightedVideo.push(document.getElementById(`playlistItem${i}`))
+            currentHighlightedVideo[0].setAttribute('class','playlistItem');
+            currentHighlightedVideo.splice(0,1);
         })
     }
 
