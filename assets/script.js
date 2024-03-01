@@ -1,4 +1,3 @@
-//AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw api key
 //test url https://www.youtube.com/playlist?list=PL2uxd6YWj7PKk4LnkWZEyqpcvnXmv8Iuf
 
 //creating a "Video" objects constructor:
@@ -25,11 +24,6 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
     var urlFormatting = /^https?:\/\/(?:www\.)?youtube\.com\/playlist\?list=/
 
     var formattedPlaylistID = userInputtedURL.replace(urlFormatting, "")
-
-    //FOR FUTURE ME:
-    //THIS CODE IS WORKING AS HALF INTENDED!
-    //searchForPlaylist's API CALL IS TOO SLOW AND WE NEED TO MAKE AN ASYNC AWAIT CALL
-    //BEFORE WE PASS THE ARRAY IT GIVES US TO putVideosInPlaylist
 
     //this line is taking the "youtube.googleapis" api and fetiching all the formation in a playlist 
     //currently set to limit of 10 items, change &maxResults=10 to change this.
@@ -100,15 +94,8 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
                         playlistTypeSelector(finalResult);
                     }
                     )
-
             }
-
-        }
-        )
-
-
-
-
+        })
 })
 
 function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
@@ -169,8 +156,6 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
                 reject(error);
             });
     })
-
-
 };
 
 function trueRandomShuffle(playlistItemsToShuffle) {
@@ -219,7 +204,7 @@ function rangeShuffle(playlistItemsToShuffle, rangeStart, rangeEnd) {
 
     let rangeOfVideos = [];
 
-    for (let i = rangeStart; i < rangeEnd; i++) {
+    for (let i = rangeStart-1; i < rangeEnd; i++) {
         rangeOfVideos.push(playlistItemsToShuffle[i])
     }
 
@@ -253,16 +238,9 @@ function playlistTypeSelector(arrayOfAllVideos) {
     `
     // <button id="smartRandom" class="shuffleChoice">smart shuffle</button> add this later.
 
-    //this commented out stuff is a potential dim feature on the button card generation
-
-    // var cardLocation = document.getElementById("floatingChoiceMenu");
-    // var dimWebpage = document.getElementById("overlay");
-    // dimWebpage.style.display = "block"
-
     var trueRandomShuffleButton = document.getElementById("trueRandom")
     var rangeRandomShuffleButton = document.getElementById("rangeRandom")
-    // var submitRangeRandomShuffleButton = document.getElementById("submitRange")
-    // var userInputtedRange = document.getElementById("submitRange").value
+
     // var smartRandomShuffleButton = document.getElementById("trueRandom")
 
     trueRandomShuffleButton.addEventListener('click', () => {
@@ -270,11 +248,12 @@ function playlistTypeSelector(arrayOfAllVideos) {
     })
 
     rangeRandomShuffleButton.addEventListener('click', () => {
-        //eventually change to rangeRandomShuffle()
-        let userInputtedRangeStart = prompt("Please specify the start of the range: ", `0 - ${arrayOfAllVideos.length}`)
-        while (userInputtedRangeStart === '' || userInputtedRangeStart > arrayOfAllVideos.length) {
+
+        //this is just an alert with input validation asking you to select a start and stop range.
+        let userInputtedRangeStart = prompt("Please specify the start of the range: ", `1 - ${arrayOfAllVideos.length}`)
+        while (userInputtedRangeStart === '' || userInputtedRangeStart > arrayOfAllVideos.length || userInputtedRangeStart == 0 ) {
             alert("Please provide a range IN range.")
-            userInputtedRangeStart = prompt("Please provide a range: ", `0 - ${arrayOfAllVideos.length}`)
+            userInputtedRangeStart = prompt("Please provide a range: ", `1 - ${arrayOfAllVideos.length}`)
         }
 
         let userInputtedRangeEnd = prompt("Please specify the end of the range: ", `${userInputtedRangeStart} - ${arrayOfAllVideos.length}`)
@@ -377,6 +356,8 @@ function playlistCreation(playlistWithAllVideoDetails) {
     function onPlayerStateChange() {
 
     }
+
+    
     //---------------------------------------------
     choiceButtonsDiv.innerHTML = part1OfPlaylistInnerHTMLConstruction + result + `</div>` + currentVideoPlaying;
 
