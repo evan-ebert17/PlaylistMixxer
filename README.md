@@ -16,7 +16,7 @@
 [License](#license)  
 
 ## Purpose  
-This project is a web-based YouTube playlist shuffler. It takes in a playlist URL and prompts the user for ways they would want to shuffle the contents of that playlist. Uses the YouTube Data API v3 to retrieve information about the playlist and then uses custom and Bootstrap CSS for formatting.
+This project is a web-based YouTube playlist shuffler. It takes in a youtube playlist URL (Example: https://www.youtube.com/playlist?list=PL2uxd6YWj7PKk4LnkWZEyqpcvnXmv8Iuf) and prompts the user for ways they would want to shuffle the contents of that playlist. Uses the YouTube Data API v3 to retrieve information about the playlist and then uses custom and Bootstrap CSS for formatting.
 
 ## Features 
 Custom shuffling of YouTube playlists.
