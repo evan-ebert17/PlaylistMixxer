@@ -1,6 +1,6 @@
 //test url https://www.youtube.com/playlist?list=PL2uxd6YWj7PKk4LnkWZEyqpcvnXmv8Iuf
 
-require('dotenv').config();
+//require('dotenv').config();
 
 //creating a "Video" objects constructor:
 function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, itemIndex, isLastItem) {
