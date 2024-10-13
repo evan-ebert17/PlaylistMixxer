@@ -1,5 +1,7 @@
 //test url https://www.youtube.com/playlist?list=PL2uxd6YWj7PKk4LnkWZEyqpcvnXmv8Iuf
 
+require('dotenv').config();
+
 //creating a "Video" objects constructor:
 function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, itemIndex, isLastItem) {
     this.videoId = videoId;
@@ -30,7 +32,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
     //to change the url of the playlist retrieved, change the &playldistId= 's url.
     //last part is the API key, but you don't need to change that.
 
-    let apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${formattedPlaylistID}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`
+    let apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${formattedPlaylistID}&key=${process.env.YOUTUBE_API_KEY}`
 
     //we fetch the url
     fetch(apiUrl)
@@ -112,7 +114,7 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
     return new Promise((resolve, reject) => {
 
         //our url we will be checking to see if hasNextPage (next_pageToken)
-        let apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=${next_pageToken}&playlistId=${playlistID}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`;
+        let apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=${next_pageToken}&playlistId=${playlistID}&key=${process.env.YOUTUBE_API_KEY}`;
 
         //while there IS a next page to get information from...
         fetch(apiUrl)
