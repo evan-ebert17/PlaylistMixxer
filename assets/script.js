@@ -33,7 +33,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
     //to change the url of the playlist retrieved, change the &playldistId= 's url.
     //last part is the API key, but you don't need to change that.
 
-    const apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEY?playlistId=${playlistID}`;
+    const apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEY?playlistId=${formattedPlaylistID}`;
 
     //we fetch the url
     fetch(apiUrl)
