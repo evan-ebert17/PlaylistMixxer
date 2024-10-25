@@ -27,12 +27,13 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
     var formattedPlaylistID = userInputtedURL.replace(urlFormatting, "")
 
+
     //this line is taking the "youtube.googleapis" api and fetiching all the formation in a playlist 
     //currently set to limit of 10 items, change &maxResults=10 to change this.
     //to change the url of the playlist retrieved, change the &playldistId= 's url.
     //last part is the API key, but you don't need to change that.
 
-    let apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${formattedPlaylistID}&key=${process.env.YOUTUBE_API_KEY}`
+    const apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEY?playlistId=${playlistID}`;
 
     //we fetch the url
     fetch(apiUrl)
@@ -98,7 +99,8 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
                     )
             }
         })
-})
+
+});
 
 function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
 
@@ -206,7 +208,7 @@ function rangeShuffle(playlistItemsToShuffle, rangeStart, rangeEnd) {
 
     let rangeOfVideos = [];
 
-    for (let i = rangeStart-1; i < rangeEnd; i++) {
+    for (let i = rangeStart - 1; i < rangeEnd; i++) {
         rangeOfVideos.push(playlistItemsToShuffle[i])
     }
 
@@ -257,7 +259,7 @@ function playlistTypeSelector(arrayOfAllVideos) {
 
         //this is just an alert with input validation asking you to select a start and stop range.
         let userInputtedRangeStart = prompt("Please specify the start of the range: ", `1 - ${arrayOfAllVideos.length}`)
-        while (userInputtedRangeStart === '' || userInputtedRangeStart > arrayOfAllVideos.length || userInputtedRangeStart == 0 ) {
+        while (userInputtedRangeStart === '' || userInputtedRangeStart > arrayOfAllVideos.length || userInputtedRangeStart == 0) {
             alert("Please provide a range IN range.")
             userInputtedRangeStart = prompt("Please provide a range: ", `1 - ${arrayOfAllVideos.length}`)
         }
@@ -363,7 +365,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
 
     }
 
-    
+
     //---------------------------------------------
     choiceButtonsDiv.innerHTML = part1OfPlaylistInnerHTMLConstruction + result + `</div>` + currentVideoPlaying;
 
@@ -386,8 +388,8 @@ function playlistCreation(playlistWithAllVideoDetails) {
             //then we remove that element from the currentHighlightedVideo array altogether.
 
             currentHighlightedVideo.push(document.getElementById(`playlistItem${i}`))
-            currentHighlightedVideo[0].setAttribute('class','playlistItem');
-            currentHighlightedVideo.splice(0,1);
+            currentHighlightedVideo[0].setAttribute('class', 'playlistItem');
+            currentHighlightedVideo.splice(0, 1);
         })
     }
 
