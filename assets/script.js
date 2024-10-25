@@ -27,13 +27,14 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
     var formattedPlaylistID = userInputtedURL.replace(urlFormatting, "")
 
+    let next_pageToken = undefined;
 
     //this line is taking the "youtube.googleapis" api and fetiching all the formation in a playlist 
     //currently set to limit of 10 items, change &maxResults=10 to change this.
     //to change the url of the playlist retrieved, change the &playldistId= 's url.
     //last part is the API key, but you don't need to change that.
 
-    const apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEY?playlistId=${formattedPlaylistID}`;
+    const apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEY?playlistId=${formattedPlaylistID}?pageToken=${next_pageToken}`;
 
     //we fetch the url
     fetch(apiUrl)
