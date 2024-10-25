@@ -1,7 +1,5 @@
 //test url https://www.youtube.com/playlist?list=PL2uxd6YWj7PKk4LnkWZEyqpcvnXmv8Iuf
 
-//require('dotenv').config();
-
 //creating a "Video" objects constructor:
 function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, itemIndex, isLastItem) {
     this.videoId = videoId;
@@ -110,13 +108,13 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
     //last part is the API key, but you don't need to change that.
 
     //this will hold the value of 1 video for our users, as an example.
-    // `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${urlOfPlaylist}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`
+    // `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${urlOfPlaylist}&key=`
 
     //this function recursively returns promises and resolves them at the end of each recursion
     return new Promise((resolve, reject) => {
 
         //our url we will be checking to see if hasNextPage (next_pageToken)
-        let apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=${next_pageToken}&playlistId=${playlistID}&key=${process.env.YOUTUBE_API_KEY}`;
+        let apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=${next_pageToken}&playlistId=${playlistID}&key=${secrets.API_KEY}`;
 
         //while there IS a next page to get information from...
         fetch(apiUrl)
