@@ -115,7 +115,7 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
     return new Promise((resolve, reject) => {
 
         //our url we will be checking to see if hasNextPage (next_pageToken)
-        let apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEYPagination?pageToken=${next_pageToken}?playlistId=${playlistID}`;
+        let apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEYPagination?pageToken=${next_pageToken}&playlistId=${playlistID}`;
 
         //while there IS a next page to get information from...
         fetch(apiUrl)
