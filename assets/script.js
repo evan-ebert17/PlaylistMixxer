@@ -314,7 +314,7 @@ function playlistCreation(playlistWithAllVideoDetails) {
 
         let currentPlaylistItem = `<div class="playlistItem" id="playlistItem${i}">
         <div id="thumbnailContainer">
-            <img class="imgSizing" src="${playlistWithAllVideoDetails[i].thumbnailPictureUrl}" alt="Thumbnail">
+            <img class="imageSizing" src="${playlistWithAllVideoDetails[i].thumbnailPictureUrl}" alt="Thumbnail">
         </div>
         <div id="titleAuthorContainer">
             <div id="titleContainer">
