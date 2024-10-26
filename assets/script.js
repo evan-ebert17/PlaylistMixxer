@@ -27,7 +27,9 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
     let formattedPlaylistID = userInputtedURL.replace(urlFormatting, "")
 
-    let next_pageToken = undefined;
+    let loader = document.getElementById("loader");
+
+    loader.style.visibility = 'visible';
 
     //this line is taking the "youtube.googleapis" api and fetiching all the formation in a playlist 
     //currently set to limit of 10 items, change &maxResults=10 to change this.
@@ -42,9 +44,11 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
         .then(response => {
             if (response.status === 404) {
                 alert("The playlist does not exist OR is private, try another.");
+                loader.style.visibility = 'hidden';
                 return;
             } else if (response.status === 400) {
                 alert("Please enter a playlist URL.");
+                loader.style.visibility = 'hidden';
                 return;
             }
             else {
@@ -55,12 +59,9 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
         .then(data => {
             console.log(data)
             if (data === undefined) {
+                loader.style.visibility = 'hidden';
                 return;
             }
-
-            let loader = document.getElementById("loader");
-
-            loader.style.visibility = 'visible';
             let nextPageToken = data.nextPageToken;
             let arrayOfAllVideos = [];
 
