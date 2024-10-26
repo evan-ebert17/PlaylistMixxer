@@ -168,6 +168,10 @@ iframe {
   border-bottom-right-radius: 10px;
 }
 
+.input-group{
+  justify-content: center;
+}
+
 
 #videoPlayer {
   width: 60vw;

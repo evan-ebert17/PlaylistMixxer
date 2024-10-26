@@ -21,7 +21,13 @@ function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, i
 
 //this generates our video by taking the url the user passes, stripping it of just our useable url, and then generating an iframe.
 document.getElementById("generatePlaylist").addEventListener("click", function () {
+
     let userInputtedURL = document.getElementById("videoURL").value
+
+    if(userInputtedURL.trim() === '') {
+        alert("Please enter a valid playlist URL.");
+        return;
+    }
 
     let urlFormatting = /^https?:\/\/(?:www\.)?youtube\.com\/playlist\?list=/
 
@@ -44,10 +50,6 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
         .then(response => {
             if (response.status === 404) {
                 alert("The playlist does not exist OR is private, try another.");
-                loader.style.visibility = 'hidden';
-                return;
-            } else if (response.status === 400) {
-                alert("Please enter a playlist URL.");
                 loader.style.visibility = 'hidden';
                 return;
             }
