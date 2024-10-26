@@ -21,11 +21,11 @@ function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, i
 
 //this generates our video by taking the url the user passes, stripping it of just our useable url, and then generating an iframe.
 document.getElementById("generatePlaylist").addEventListener("click", function () {
-    var userInputtedURL = document.getElementById("videoURL").value
+    let userInputtedURL = document.getElementById("videoURL").value
 
-    var urlFormatting = /^https?:\/\/(?:www\.)?youtube\.com\/playlist\?list=/
+    let urlFormatting = /^https?:\/\/(?:www\.)?youtube\.com\/playlist\?list=/
 
-    var formattedPlaylistID = userInputtedURL.replace(urlFormatting, "")
+    let formattedPlaylistID = userInputtedURL.replace(urlFormatting, "")
 
     let next_pageToken = undefined;
 
@@ -61,12 +61,12 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
             let loader = document.getElementById("loader");
 
             loader.style.visibility = 'visible';
-            var nextPageToken = data.nextPageToken;
+            let nextPageToken = data.nextPageToken;
             let arrayOfAllVideos = [];
 
             //naming variables for readability
 
-            var itemsThisPage = data.items.length
+            let itemsThisPage = data.items.length
             //I think there may be an edge case where if a playlist is exactly 50 elements long, we're going to lose the last, or 50th element
 
             //loop through the results and strip the video ids, stick them in "arrayOfAllVideos"
@@ -115,7 +115,7 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
     return new Promise((resolve, reject) => {
 
         //our url we will be checking to see if hasNextPage (next_pageToken)
-        let apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEYPagination?pageToken=${next_pageToken}?playlistId=${formattedPlaylistID}`;
+        let apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEYPagination?pageToken=${next_pageToken}?playlistId=${playlistID}`;
 
         //while there IS a next page to get information from...
         fetch(apiUrl)
@@ -169,8 +169,8 @@ function trueRandomShuffle(playlistItemsToShuffle) {
     //THIS IS TRUE RANDOM SHUFFLE!
     while (playlistItemsToShuffle.length != 0) {
 
-        var currentRandomNumber = Math.floor(Math.random() * playlistItemsToShuffle.length);
-        var randomVideoFromUnshuffledPlaylist = playlistItemsToShuffle[currentRandomNumber]
+        let currentRandomNumber = Math.floor(Math.random() * playlistItemsToShuffle.length);
+        let randomVideoFromUnshuffledPlaylist = playlistItemsToShuffle[currentRandomNumber]
         videosThatHaveBeenShuffled.push(randomVideoFromUnshuffledPlaylist)
         playlistItemsToShuffle.splice(currentRandomNumber, 1);
 
@@ -213,9 +213,9 @@ function rangeShuffle(playlistItemsToShuffle, rangeStart, rangeEnd) {
 
     while (rangeOfVideos.length != 0) {
 
-        var currentRandomNumber = Math.floor(Math.random() * rangeOfVideos.length);
+        let currentRandomNumber = Math.floor(Math.random() * rangeOfVideos.length);
 
-        var randomVideoFromUnshuffledPlaylist = rangeOfVideos[currentRandomNumber]
+        let randomVideoFromUnshuffledPlaylist = rangeOfVideos[currentRandomNumber]
         console.log(randomVideoFromUnshuffledPlaylist)
         videosThatHaveBeenShuffled.push(randomVideoFromUnshuffledPlaylist)
         console.log(videosThatHaveBeenShuffled)
@@ -228,7 +228,7 @@ function rangeShuffle(playlistItemsToShuffle, rangeStart, rangeEnd) {
 
 function playlistTypeSelector(arrayOfAllVideos) {
     //this function returns the choice a user made in their preferred shuffle method and generates the card to make that choice.
-    var choiceButtonsDiv = document.getElementById('choiceButtonsDiv')
+    let choiceButtonsDiv = document.getElementById('choiceButtonsDiv')
 
     //this card creates 3 buttons that will determine the "3" choices the user can make.
     choiceButtonsDiv.innerHTML = `
@@ -245,8 +245,8 @@ function playlistTypeSelector(arrayOfAllVideos) {
     `
     // <button id="smartRandom" class="shuffleChoice">smart shuffle</button> add this later.
 
-    var trueRandomShuffleButton = document.getElementById("trueRandom")
-    var rangeRandomShuffleButton = document.getElementById("rangeRandom")
+    let trueRandomShuffleButton = document.getElementById("trueRandom")
+    let rangeRandomShuffleButton = document.getElementById("rangeRandom")
 
     // var smartRandomShuffleButton = document.getElementById("trueRandom")
 
@@ -336,15 +336,15 @@ function playlistCreation(playlistWithAllVideoDetails) {
         <iframe id="videoElement" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${playlistWithAllVideoDetails[0].videoId}?autoplay=1&enablejsapi=1&origin=https://evan-ebert17.github.io/PlaylistShuffler/" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div >`
 
-    var tag = document.createElement('script');
+    let tag = document.createElement('script');
 
     tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
+    let firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     // 3. This function creates an <iframe> (and YouTube player)
     //    after the API code downloads.
-    var player;
+    let player;
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
             events: {
