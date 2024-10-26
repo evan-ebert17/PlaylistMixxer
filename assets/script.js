@@ -111,14 +111,11 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
     //to change the url of the playlist retrieved, change the &playldistId= 's url.
     //last part is the API key, but you don't need to change that.
 
-    //this will hold the value of 1 video for our users, as an example.
-    // `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${urlOfPlaylist}&key=AIzaSyAD7JowNHoI4KsaRB_eLKUMRsDhzNv5opw`
-
     //this function recursively returns promises and resolves them at the end of each recursion
     return new Promise((resolve, reject) => {
 
         //our url we will be checking to see if hasNextPage (next_pageToken)
-        let apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=${next_pageToken}&playlistId=${playlistID}&key=${process.env.YOUTUBE_API_KEY}`;
+        let apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEYPagination?pageToken=${next_pageToken}?playlistId=${formattedPlaylistID}`;
 
         //while there IS a next page to get information from...
         fetch(apiUrl)
