@@ -153,22 +153,13 @@ iframe {
 }
 
 #thumbnailContainer {
-  /* height: 200px; Set the desired height */
-  /* width: 100px; */
-  /* Set the desired width */
-  /* border-radius: 50%; */
-  overflow: hidden;
-  /* Clip the image to the container's rounded shape */
   display: flex;
   justify-content: center;
-  /* align-items: center; */
-  /* background-color: #f0f0f0; Optional: Background color for the container */
 }
 
+
 .imageSizing {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  padding: .25rem;
 }
 
 /* bootstrap style slight override */
