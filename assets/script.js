@@ -21,6 +21,10 @@ function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, i
 
 let almostDoneLoading = 0;
 
+let percentageLoaderText = document.getElementById("are-we-done-yet").textContent;
+
+console.log("Hey! Try this playlist for starters: https://www.youtube.com/playlist?list=PLNXAm_-MT6SC4uf85w82YuzZ-1S4Hk8GL");
+
 //this generates our video by taking the url the user passes, stripping it of just our useable url, and then generating an iframe.
 document.getElementById("generatePlaylist").addEventListener("click", function () {
 
@@ -44,8 +48,10 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
     //to change the url of the playlist retrieved, change the &playldistId= 's url.
     //last part is the API key, but you don't need to change that.
 
+    percentageLoaderText = "Grabbing playlist...";
+
     const apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEY?playlistId=${formattedPlaylistID}`;
-    //?pageToken=${next_pageToken}
+    
 
     //we fetch the url
     fetch(apiUrl)
@@ -77,11 +83,9 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
             let totalItems = data.pageInfo.totalResults;
 
-            document.getElementById("num-of-videos").textContent = "Videos in playlist: " + totalItems;
-
             almostDoneLoading = itemsThisPage;
 
-            document.getElementById("are-we-done-yet").textContent = `${almostDoneLoading} / ${totalItems} Loaded`;
+            percentageLoaderText = `${almostDoneLoading} / ${totalItems} Videos loaded`;
 
 
             //loop through the results and strip the video ids, stick them in "arrayOfAllVideos"
@@ -145,7 +149,7 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
 
                 almostDoneLoading = almostDoneLoading + itemsThisPage
 
-                document.getElementById("are-we-done-yet").textContent = `${almostDoneLoading} / ${data.pageInfo.totalResults} Loaded`;
+                percentageLoaderText = `${almostDoneLoading} / ${data.pageInfo.totalResults} Videos loaded`;
 
                 for (let i = 0; i < itemsThisPage; i++) {
                     //this is getting the unique id/url of the video at index i.

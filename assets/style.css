@@ -45,6 +45,11 @@ body {
   height: 100%;
 }
 
+#percentage-loader {
+  display: flex;
+  justify-content: center;
+}
+
 .exampleImages {
   display: flex;
   justify-content: space-evenly;
