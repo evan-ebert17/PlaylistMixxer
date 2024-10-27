@@ -77,7 +77,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
             let totalItems = data.pageInfo.totalResults;
 
-            document.getElementById("num-of-videos").textContent = totalItems;
+            document.getElementById("num-of-videos").textContent = "Videos in playlist: " + totalItems;
 
             almostDoneLoading = itemsThisPage;
 
