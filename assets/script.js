@@ -21,7 +21,7 @@ function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, i
 
 let almostDoneLoading = 0;
 
-let percentageLoaderText = document.getElementById("are-we-done-yet").textContent;
+let percentageLoader = document.getElementById("are-we-done-yet");
 
 console.log("Hey! Try this playlist for starters: https://www.youtube.com/playlist?list=PLNXAm_-MT6SC4uf85w82YuzZ-1S4Hk8GL");
 
@@ -48,7 +48,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
     //to change the url of the playlist retrieved, change the &playldistId= 's url.
     //last part is the API key, but you don't need to change that.
 
-    percentageLoaderText = "Grabbing playlist...";
+    percentageLoader.textContent =  "Grabbing playlist...";
 
     const apiUrl = `https://ikrh3hyhzc.execute-api.us-east-2.amazonaws.com/getAPIKEY?playlistId=${formattedPlaylistID}`;
     
@@ -85,7 +85,7 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
 
             almostDoneLoading = itemsThisPage;
 
-            percentageLoaderText = `${almostDoneLoading} / ${totalItems} Videos loaded`;
+            percentageLoader.textContent = `${almostDoneLoading} / ${totalItems} Videos loaded`;
 
 
             //loop through the results and strip the video ids, stick them in "arrayOfAllVideos"
@@ -149,7 +149,7 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
 
                 almostDoneLoading = almostDoneLoading + itemsThisPage
 
-                percentageLoaderText = `${almostDoneLoading} / ${data.pageInfo.totalResults} Videos loaded`;
+                percentageLoader.textContent = `${almostDoneLoading} / ${data.pageInfo.totalResults} Videos loaded`;
 
                 for (let i = 0; i < itemsThisPage; i++) {
                     //this is getting the unique id/url of the video at index i.
