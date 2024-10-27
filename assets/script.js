@@ -19,6 +19,8 @@ function VideoDetails(videoId, videoTitle, thumbnailPictureUrl, videoUploader, i
     }
 }
 
+let almostDoneLoading = 0;
+
 //this generates our video by taking the url the user passes, stripping it of just our useable url, and then generating an iframe.
 document.getElementById("generatePlaylist").addEventListener("click", function () {
 
@@ -72,9 +74,16 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
             let itemsThisPage = data.items.length
             //I think there may be an edge case where if a playlist is exactly 50 elements long, we're going to lose the last, or 50th element
 
+
             let totalItems = data.pageInfo.totalResults;
 
-            
+            document.getElementById("num-of-videos").textContent = totalItems;
+
+            almostDoneLoading = itemsThisPage;
+
+            document.getElementById("are-we-done-yet").textContent = `${almostDoneLoading} / ${totalItems} Loaded`;
+
+
             //loop through the results and strip the video ids, stick them in "arrayOfAllVideos"
             for (i = 0; i < itemsThisPage; i++) {
                 //this is getting the unique id/url of the video at index i.
@@ -133,6 +142,10 @@ function putVideosInPlaylist(playlistID, next_pageToken, videoItems) {
                 //this gives us the amount of things on X page, if it's less than 50 we're done looping and need to accomodate the < 50 so we dont get undefined or OOB index errors
                 let itemsThisPage = data.items.length
                 console.log(itemsThisPage)
+
+                almostDoneLoading = almostDoneLoading + itemsThisPage
+
+                document.getElementById("are-we-done-yet").textContent = `${almostDoneLoading} / ${data.pageInfo.totalResults} Loaded`;
 
                 for (let i = 0; i < itemsThisPage; i++) {
                     //this is getting the unique id/url of the video at index i.
