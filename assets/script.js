@@ -72,6 +72,9 @@ document.getElementById("generatePlaylist").addEventListener("click", function (
             let itemsThisPage = data.items.length
             //I think there may be an edge case where if a playlist is exactly 50 elements long, we're going to lose the last, or 50th element
 
+            let totalItems = data.pageInfo.totalResults;
+
+            
             //loop through the results and strip the video ids, stick them in "arrayOfAllVideos"
             for (i = 0; i < itemsThisPage; i++) {
                 //this is getting the unique id/url of the video at index i.
@@ -235,15 +238,20 @@ function playlistTypeSelector(arrayOfAllVideos) {
 
     //this card creates 3 buttons that will determine the "3" choices the user can make.
     choiceButtonsDiv.innerHTML = `
-                    <div>
+                    <div class="options-div">
                     
                     <button id="trueRandom" class="btn btn-dark shuffleChoice">True Random Shuffle</button>
                     <p class="shuffleChoiceText">This shuffle shuffles the whole playlist <i>entirely</i> randomly.</p>
                     </div>
-                    <div>
+                    <div class="options-div">
                     
                     <button id="rangeRandom" type="button" class="btn btn-dark shuffleChoice">Range Random Shuffle</button>
                     <p class="shuffleChoiceText" >This shuffle takes in a start and an end and shuffles the playlist between that range.</p>
+                    </div>
+                    <div class="options-div">
+                    
+                    <button id="smartRandom" type="button" class="btn btn-dark shuffleChoice">Smart Random Shuffle</button>
+                    <p class="shuffleChoiceText" >This shuffle, on repeated use, will monitor what songs have and haven't been played, and make sure everything gets heard (WIP).</p>
                     </div>
     `
     // <button id="smartRandom" class="shuffleChoice">smart shuffle</button> add this later.
